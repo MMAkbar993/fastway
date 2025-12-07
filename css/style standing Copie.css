@@ -1,0 +1,470 @@
+/* ==== STANDING PAGE ==== */
+.standing-page {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 40px;
+}
+
+.top-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-line h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin: -3px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.serie-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  margin-top: 14px;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+.btn-blue {
+  background-color: #00e7ff;
+  color: black;
+}
+
+.btn-red {
+  background-color: #f52a2a;
+  color: white;
+}
+
+.title-underline {
+  height: 6px;
+  background: linear-gradient(to right, #00e7ff, #005eff);
+  margin: 2px 0 25px;
+  width: 100%;
+}
+
+
+.btn {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  margin-top: 14px;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+.btn-blue {
+  background-color: #00e7ff;
+  color: black;
+}
+
+.btn-red {
+  background-color: #f52a2a;
+  color: white;
+}
+
+.title-underline {
+  height: 6px;
+  background: linear-gradient(to right, #00e7ff, #005eff);
+  margin: 2px 0 25px;
+  width: 100%;
+}
+
+/* ===== TABLE HEADERS ===== */
+.column-header {
+  display: grid;
+  grid-template-columns:
+    1fr   /* Pos */
+    0.7fr   /* No. */
+    1.5fr   /* Car */
+    1fr   /* Win */
+    1fr   /* Team */
+    0.7fr   /* CH Win */
+    1.4fr   /* Best Time */
+    0.7fr   /* Win% */
+    1fr;  /* Total */
+  color: black;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  padding: 8px 0 6px; /* Titre plus bas */
+  border-bottom: 6px solid #ff2b2b; /* ligne rouge bien droite */
+  margin-bottom: 16px;
+  border-radius: 0; /* coins carrés */
+}
+
+/* Déplacement vers le bas de tous les titres */
+.column-header > div {
+  transform: translateY(4px);
+}
+
+/* ===== TABLE DATA ROWS ===== */
+.column-row {
+  display: grid;
+  grid-template-columns:
+    1fr   /* Pos */
+    0.7fr   /* No. */
+    1.5fr   /* Car */
+    1fr   /* Win */
+    1fr   /* Team */
+    0.7fr   /* CH Win */
+    1.4fr   /* Best Time */
+    0.7fr   /* Win% */
+    1fr;  /* Total */
+  text-align: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 20px;
+}
+.serie-selector {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.serie-selector button {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #222;
+  color: white;
+  border: 2px solid cyan;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.serie-selector button:hover {
+  transform: scale(1.05);
+}
+
+.serie-selector button.active {
+  background-color: cyan;
+  color: black;
+}
+
+.serie-table {
+  width: 100%;
+  max-width: 800px;
+}
+
+.serie-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.serie-table th,
+.serie-table td {
+  border: 1px solid #999;
+  padding: 8px;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.top-buttons-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.serie-buttons,
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+
+.start-calif,
+.start-race {
+  background-color: #e0e0e0; /* gris clair par défaut */
+  color: black;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 6px 10px;
+  height: 34px;
+  line-height: 1;
+  border: none;
+  border-radius: 10px;
+  margin-top: 25px;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.start-race {
+  background-color: black;
+  color: white;
+}
+
+.race-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 0px;
+  margin-left: 285px; /* ← tasse vers la gauche ici */
+}
+
+.button-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: 10px;
+  margin-top: 40px;
+}
+
+.vertical-divider {
+  width: 1px;
+  height: 28px;
+  background-color: #888; /* gris moyen */
+}
+
+.vertical-divider {
+  width: 1px;
+  height: 28px;
+  background-color: #888;
+  margin-top: 23px; /* ajuste ici selon ce que tu veux */
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  font-size: 24px;
+  font-family: 'Segoe UI', sans-serif;
+  border-radius: 12px;
+  box-shadow: 0 0 15px black;
+  text-align: center;
+  width: 400px;
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+}
+
+.modal-content input {
+  font-size: 24px;
+  padding: 8px 16px;
+  width: 80%;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid #000;
+}
+
+.admin-buttons {
+  margin-top: 60px;
+  padding: 20px;
+  text-align: center;
+}
+
+.admin-buttons button {
+  margin: 10px;
+  padding: 12px 20px;
+  font-size: 16px;
+  background-color: #e70e0e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.admin-buttons button:hover {
+  background-color: #ac0909;
+}
+
+
+/* Style du tableau de résultats */
+.recap-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  text-align: center;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+
+
+.recap-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.recap-table tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+
+/* podium */
+.recap-table tr:nth-child(1) td:first-child { color: #d4af37; font-weight: bold; } /* Or */
+.recap-table tr:nth-child(2) td:first-child { color: #c0c0c0; font-weight: bold; } /* Argent */
+.recap-table tr:nth-child(3) td:first-child { color: #cd7f32; font-weight: bold; } /* Bronze */
+
+
+
+/* Podium */
+.recap-table tr:nth-child(1) { background-color: #ffd70033; } /* doré pâle */
+.recap-table tr:nth-child(2) { background-color: #c0c0c033; } /* argent */
+.recap-table tr:nth-child(3) { background-color: #cd7f3233; } /* bronze */
+
+.recap-table thead tr {
+  background: linear-gradient(to right, #00c6ff, #0072ff); /* Cyan -> Bleu */
+  color: white;
+}
+.recap-table th {
+  padding: 6px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.modal-content input {
+  font-size: 24px;
+  padding: 8px 16px;
+  width: 80%;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid #00e7ff; /* contour cyan */
+  background-color: #fff; /* fond blanc */
+  color: black; /* texte noir */
+  box-shadow: 0 0 6px #00e7ff66; /* glow discret cyan */
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.modal-content input:focus {
+  outline: none;
+  box-shadow: 0 0 10px #00e7ff99; /* glow légèrement plus fort au focus */
+  border-color: #00cfff; /* contour un peu plus vif au focus */
+}
+
+.modal-content input::placeholder {
+  color: rgba(0,0,0,0.5);
+}
+
+/* Container du logo pour limiter la taille */
+.logo-container {
+    height: 50px;       /* hauteur fixe de la navbar pour le logo */
+    display: flex;
+    align-items: center; /* centre verticalement l'image */
+    overflow: hidden;    /* coupe ce qui dépasse */
+}
+
+/* Image du logo */
+.logo-container img {
+    max-height: 100%;    /* l'image prendra au maximum la hauteur du container */
+    width: auto;         /* garde les proportions */
+    display: block;
+}
+
+
+
+
+
+
+
+
+
+
+/* Indicateurs de Position (+/-) */
+/* Indicateurs de Position (+/-) */
+.pos-cell-content {
+    display: flex;
+    align-items: center;
+    /* Pousser tout le contenu de la cellule vers la gauche */
+    justify-content: flex-start; 
+    /* Laisser un petit espace entre le bord gauche et le contenu */
+    padding-left: 25px; 
+    gap: 6px;
+    width: 100%;
+}
+
+.rank-number {
+    font-weight: 800; /* Mettre en gras */
+    font-size: 18px;  /* AUGMENTÉ : Rend le numéro de position plus grand */
+}
+
+.delta-indicator {
+    font-size: 20px; /* Légèrement augmenté */
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px; 
+    /* Décaler légèrement vers la gauche si nécessaire pour contrer le décalage */
+    margin-left: -5px; 
+}
+
+.delta-up { color: #00ff00; }   /* Vert */
+.delta-down { color: #ff003c; } /* Rouge */
+.delta-neutral { display: none; } /* On cache les flèches si aucun changement */
+
+.delta-indicator {
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px; /* Largeur fixe pour aligner */
+}
+
+.delta-up { color: #00ff00; }   /* Vert */
+.delta-down { color: #ff003c; } /* Rouge */
+.delta-neutral { opacity: 0.2; } /* Gris discret si pas de changement */
+
+
+
+
+
+
+
+
+/* Style pour les voitures éliminées (non qualifiées ou éliminées en playoff) */
+.eliminated-visual {
+    color: #6e6e6e !important;      /* Gris foncé/pâle */
+    opacity: 0.5;                /* Semi-transparent */
+    filter: grayscale(100%);     /* En noir et blanc */
+    pointer-events: none;        /* Empêche de cliquer dessus */
+}
+
+/* On s'assure que les éléments internes suivent */
+.eliminated-visual div, 
+.eliminated-visual .rank-number {
+    color: #6e6e6e !important;
+    text-shadow: none !important;
+}
