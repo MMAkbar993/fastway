@@ -3,6 +3,8 @@
   max-width: 1200px;
   margin: 50px auto;
   padding: 0 40px;
+  position: relative;
+  z-index: 1;
 }
 
 .top-line {
@@ -13,9 +15,15 @@
 
 .top-line h1 {
   font-size: 36px;
-  font-weight: bold;
+  font-weight: 900;
   margin: -3px;
   font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #00e7ff 0%, #ff003c 50%, #FFD700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(0, 231, 255, 0.5);
+  letter-spacing: 2px;
 }
 
 .serie-buttons {
@@ -26,68 +34,72 @@
 .btn {
   font-family: 'Segoe UI', sans-serif;
   font-size: 16px;
-  font-weight: bold;
-  padding: 6px 14px;
-  border: none;
+  font-weight: 800;
+  padding: 10px 20px;
+  border: 2px solid transparent;
   border-radius: 12px;
   cursor: pointer;
-  transition: transform 0.2s ease;
-  margin-top: 14px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  min-height: 40px;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn:hover::before {
+  left: 100%;
 }
 
 .btn:hover {
-  transform: scale(1.05);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 231, 255, 0.4);
 }
 
 .btn-blue {
-  background-color: #00e7ff;
-  color: black;
+  background: linear-gradient(135deg, #00e7ff 0%, #0099cc 100%);
+  color: #000;
+  border: 2px solid rgba(0, 231, 255, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 231, 255, 0.4);
+}
+
+.btn-blue:hover {
+  box-shadow: 0 8px 30px rgba(0, 231, 255, 0.7);
+  background: linear-gradient(135deg, #00f0ff 0%, #00b3d9 100%);
+}
+
+.btn-blue.active {
+  box-shadow: 0 0 30px rgba(0, 231, 255, 0.8), inset 0 0 20px rgba(0, 231, 255, 0.3);
+  background: linear-gradient(135deg, #00f0ff 0%, #00b3d9 100%);
 }
 
 .btn-red {
-  background-color: #f52a2a;
-  color: white;
+  background: linear-gradient(135deg, #ff003c 0%, #cc0029 100%);
+  color: #fff;
+  border: 2px solid rgba(255, 0, 60, 0.5);
+  box-shadow: 0 4px 20px rgba(255, 0, 60, 0.4);
 }
 
-.title-underline {
-  height: 6px;
-  background: linear-gradient(to right, #00e7ff, #005eff);
-  margin: 2px 0 25px;
-  width: 100%;
+.btn-red:hover {
+  box-shadow: 0 8px 30px rgba(255, 0, 60, 0.7);
+  background: linear-gradient(135deg, #ff3366 0%, #ff003c 100%);
 }
 
-
-.btn {
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 16px;
-  font-weight: bold;
-  padding: 6px 14px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  margin-top: 14px;
-}
-
-.btn:hover {
-  transform: scale(1.05);
-}
-
-.btn-blue {
-  background-color: #00e7ff;
-  color: black;
-}
-
-.btn-red {
-  background-color: #f52a2a;
-  color: white;
-}
-
-.title-underline {
-  height: 6px;
-  background: linear-gradient(to right, #00e7ff, #005eff);
-  margin: 2px 0 25px;
-  width: 100%;
+.btn-red.active {
+  box-shadow: 0 0 30px rgba(255, 0, 60, 0.8), inset 0 0 20px rgba(255, 0, 60, 0.3);
+  background: linear-gradient(135deg, #ff3366 0%, #ff003c 100%);
 }
 
 /* ===== TABLE HEADERS ===== */
@@ -132,10 +144,11 @@
     0.7fr   /* Win% */
     1fr;  /* Total */
   text-align: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #ccc;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   font-family: 'Segoe UI', sans-serif;
   font-size: 20px;
+  transition: all 0.3s ease;
 }
 .serie-selector {
   display: flex;
@@ -201,31 +214,57 @@
 
 .start-calif,
 .start-race {
-  background-color: #e0e0e0; /* gris clair par défaut */
-  color: black;
   font-family: 'Segoe UI', sans-serif;
   font-size: 16px;
-  font-weight: bold;
-  padding: 6px 10px;
-  height: 34px;
-  line-height: 1;
-  border: none;
-  border-radius: 10px;
-  margin-top: 25px;
-  transition: transform 0.2s ease;
+  font-weight: 800;
+  padding: 10px 20px;
+  height: auto;
+  min-height: 40px;
+  line-height: 1.2;
+  border-radius: 12px;
+  margin-top: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.start-calif {
+  background: linear-gradient(135deg, rgba(100, 100, 100, 0.3) 0%, rgba(60, 60, 60, 0.3) 100%);
+  border: 2px solid rgba(150, 150, 150, 0.5);
+  color: #ffffff;
+  backdrop-filter: blur(10px);
+}
+
+.start-calif:hover {
+  background: linear-gradient(135deg, rgba(150, 150, 150, 0.4) 0%, rgba(100, 100, 100, 0.4) 100%);
+  border-color: rgba(200, 200, 200, 0.7);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 .start-race {
-  background-color: black;
-  color: white;
+  background: linear-gradient(135deg, #cc0029 0%, #990020 100%);
+  border: 2px solid rgba(255, 0, 60, 0.6);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(255, 0, 60, 0.3);
+}
+
+.start-race:hover {
+  background: linear-gradient(135deg, #ff003c 0%, #cc0029 100%);
+  border-color: rgba(255, 0, 60, 0.9);
+  box-shadow: 0 6px 25px rgba(255, 0, 60, 0.5);
+  transform: translateY(-2px);
 }
 
 .race-buttons {
   display: flex;
-  gap: 12px;
+  gap: 15px;
   margin-top: 0px;
-  margin-left: 285px; /* ← tasse vers la gauche ici */
+  margin-left: 285px;
+  align-items: center;
 }
 
 .button-section {
@@ -243,10 +282,11 @@
 }
 
 .vertical-divider {
-  width: 1px;
+  width: 2px;
   height: 28px;
-  background-color: #888;
-  margin-top: 23px; /* ajuste ici selon ce que tu veux */
+  background: linear-gradient(180deg, transparent, #00e7ff, transparent);
+  margin-top: 23px;
+  box-shadow: 0 0 10px rgba(0, 231, 255, 0.5);
 }
 
 .modal-overlay {
@@ -292,19 +332,36 @@
   text-align: center;
 }
 
+.admin-buttons {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 30px;
+  margin-top: 40px;
+}
+
 .admin-buttons button {
   margin: 10px;
-  padding: 12px 20px;
+  padding: 12px 24px;
   font-size: 16px;
-  background-color: #e70e0e;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ff003c 0%, #cc0029 100%);
   color: white;
-  border: none;
-  border-radius: 8px;
+  border: 2px solid rgba(255, 0, 60, 0.5);
+  border-radius: 10px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(255, 0, 60, 0.3);
 }
 
 .admin-buttons button:hover {
-  background-color: #ac0909;
+  background: linear-gradient(135deg, #ff003c 0%, #ff3366 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 0, 60, 0.5);
+  border-color: rgba(255, 0, 60, 0.8);
 }
 
 

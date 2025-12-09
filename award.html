@@ -7,6 +7,11 @@
     <title>FASTWAY - Awards</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/style standing Copie.css" />
+    <link rel="stylesheet" href="css/modern-styles.css" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="images/favicon_io/site.webmanifest">
     <style>
         .award-page {
             max-width: 1400px;
@@ -205,7 +210,7 @@
                 const allData = JSON.parse(localStorage.getItem('fastwayAllData') || '[]');
                 const raceState = JSON.parse(localStorage.getItem('fastway_race_state_v2') || '{}');
                 const playoffData = JSON.parse(localStorage.getItem('fastway_playoff_data') || '{"A":{"qualified":[]},"B":{"qualified":[]}}');
-                
+
                 return { allData, raceState, playoffData };
             } catch (e) {
                 console.warn('Error loading awards data:', e);
@@ -220,12 +225,12 @@
                 mostWins: { winner: null, value: 0 },
                 mostPoles: { winner: null, value: 0 },
                 mostConsistent: { winner: null, value: 0 },
-                
+
                 // Championship Awards
                 seriesAChampion: { winner: null, points: 0 },
                 seriesBChampion: { winner: null, points: 0 },
                 overallChampion: { winner: null, points: 0 },
-                
+
                 // Special Awards
                 rookieOfTheYear: { winner: null, value: 0 },
                 comebackOfTheYear: { winner: null, value: 0 },
@@ -266,7 +271,7 @@
             allData.forEach((driver, index) => {
                 const isSerieA = index < allData.length / 2;
                 const total = (parseInt(driver.wins) || 0) * 10 + (parseInt(driver.points) || 0);
-                
+
                 if (isSerieA) {
                     serieADrivers.push({ name: driver.name, total });
                 } else {
@@ -487,4 +492,3 @@
 </body>
 
 </html>
-

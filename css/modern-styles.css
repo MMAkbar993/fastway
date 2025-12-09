@@ -1,0 +1,528 @@
+/* ===== MODERN FASTWAY UI ENHANCEMENTS ===== */
+
+/* Global Modern Background */
+body {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(0, 231, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 0, 60, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Enhanced Navbar with Glassmorphism */
+.navbar {
+    background: rgba(10, 10, 20, 0.75) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    padding: 15px 30px;
+}
+
+.nav-links {
+    gap: 5px;
+}
+
+.nav-links a {
+    padding: 10px 18px;
+    margin: 0 3px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-links a::before {
+    background: linear-gradient(135deg, #ff003c 0%, #0077ff 100%);
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-links a:hover {
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.nav-links a:hover::before {
+    opacity: 0.25;
+    transform: scale(1);
+}
+
+.nav-links a::after {
+    height: 3px;
+    background: linear-gradient(90deg, #ff003c, #00e7ff);
+    width: 0;
+    bottom: -3px;
+    box-shadow: 0 0 10px rgba(0, 231, 255, 0.5);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.navbar-underline {
+    height: 3px;
+    background: linear-gradient(90deg, #ff003c 0%, #00e7ff 50%, #ff003c 100%);
+    background-size: 200% 100%;
+    animation: gradientShift 3s ease infinite;
+    box-shadow: 0 0 20px rgba(255, 0, 60, 0.5), 0 0 40px rgba(0, 231, 255, 0.3);
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Modern Button Styles */
+.btn {
+    background: linear-gradient(135deg, rgba(0, 231, 255, 0.2) 0%, rgba(255, 0, 60, 0.2) 100%);
+    border: 2px solid transparent;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 231, 255, 0.4);
+}
+
+.btn-blue {
+    background: linear-gradient(135deg, #00e7ff 0%, #0099cc 100%) !important;
+    color: #000 !important;
+    font-weight: 800 !important;
+    box-shadow: 0 4px 20px rgba(0, 231, 255, 0.4) !important;
+    border: 2px solid rgba(0, 231, 255, 0.5) !important;
+}
+
+.btn-blue:hover {
+    box-shadow: 0 8px 30px rgba(0, 231, 255, 0.7) !important;
+    transform: translateY(-3px) scale(1.05) !important;
+    background: linear-gradient(135deg, #00f0ff 0%, #00b3d9 100%) !important;
+}
+
+.btn-blue.active {
+    box-shadow: 0 0 30px rgba(0, 231, 255, 0.8), inset 0 0 20px rgba(0, 231, 255, 0.3) !important;
+}
+
+.btn-red {
+    background: linear-gradient(135deg, #ff003c 0%, #cc0029 100%) !important;
+    color: #fff !important;
+    font-weight: 800 !important;
+    box-shadow: 0 4px 20px rgba(255, 0, 60, 0.4) !important;
+    border: 2px solid rgba(255, 0, 60, 0.5) !important;
+}
+
+.btn-red:hover {
+    box-shadow: 0 8px 30px rgba(255, 0, 60, 0.7) !important;
+    transform: translateY(-3px) scale(1.05) !important;
+    background: linear-gradient(135deg, #ff3366 0%, #ff003c 100%) !important;
+}
+
+.btn-red.active {
+    box-shadow: 0 0 30px rgba(255, 0, 60, 0.8), inset 0 0 20px rgba(255, 0, 60, 0.3) !important;
+}
+
+/* Button styles are now in style standing Copie.css for better specificity */
+
+/* Modern Table Styles */
+.column-header {
+    background: linear-gradient(135deg, rgba(0, 231, 255, 0.15) 0%, rgba(255, 0, 60, 0.15) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 15px 0;
+    margin-bottom: 20px;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.column-header > div {
+    color: #fff;
+    font-weight: 800;
+    text-shadow: 0 2px 10px rgba(0, 231, 255, 0.3);
+}
+
+.column-row {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    padding: 15px 0;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.column-row:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(0, 231, 255, 0.3);
+    transform: translateX(5px);
+    box-shadow: 0 4px 20px rgba(0, 231, 255, 0.2);
+}
+
+.column-row > div {
+    color: #e0e0e0;
+    font-weight: 500;
+}
+
+/* Modern Page Headers */
+.standing-page, .playoff-page, .driverlist-page, .hof-page, .award-page {
+    position: relative;
+    z-index: 1;
+}
+
+.top-line h1, .page-header h1, .playoff-header h1 {
+    background: linear-gradient(135deg, #00e7ff 0%, #ff003c 50%, #FFD700 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(0, 231, 255, 0.5);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* Modern Cards */
+.bracket-section, .driver-card, .champion-card, .award-card, .record-card, .round-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bracket-section:hover, .driver-card:hover, .champion-card:hover, .award-card:hover, .record-card:hover, .round-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(0, 231, 255, 0.5);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(0, 231, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Modern Status Cards */
+.playoff-status {
+    background: linear-gradient(135deg, rgba(255, 0, 60, 0.15) 0%, rgba(0, 231, 255, 0.15) 100%);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(255, 0, 60, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Modern Search Box */
+.search-box {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+    transition: all 0.3s ease;
+}
+
+.search-box:focus {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(0, 231, 255, 0.5) !important;
+    box-shadow: 0 0 30px rgba(0, 231, 255, 0.3) !important;
+    outline: none;
+}
+
+.search-box::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Modern Filter Buttons */
+.filter-btn {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(0, 231, 255, 0.3) !important;
+    color: #00e7ff !important;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    background: rgba(0, 231, 255, 0.2) !important;
+    border-color: rgba(0, 231, 255, 0.6) !important;
+    box-shadow: 0 0 20px rgba(0, 231, 255, 0.4) !important;
+    transform: translateY(-3px) scale(1.05);
+}
+
+.filter-btn.active {
+    background: linear-gradient(135deg, #00e7ff 0%, #0099cc 100%) !important;
+    border-color: #00e7ff !important;
+    color: #000 !important;
+    box-shadow: 0 0 25px rgba(0, 231, 255, 0.6) !important;
+    font-weight: 800;
+}
+
+/* Progress Bars */
+.progress-bar {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, #ff003c 0%, #00e7ff 50%, #ff003c 100%);
+    background-size: 200% 100%;
+    animation: gradientShift 2s ease infinite;
+    box-shadow: 0 0 20px rgba(0, 231, 255, 0.5);
+}
+
+/* Modern Modal Styles */
+.modal-overlay {
+    background: rgba(0, 0, 0, 0.85) !important;
+    backdrop-filter: blur(10px);
+}
+
+.modal-content {
+    background: linear-gradient(135deg, rgba(20, 20, 40, 0.95) 0%, rgba(10, 10, 30, 0.95) 100%) !important;
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(0, 231, 255, 0.2);
+    color: #fff !important;
+}
+
+.modal-content input {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 2px solid rgba(0, 231, 255, 0.3) !important;
+    color: #fff !important;
+    backdrop-filter: blur(10px);
+}
+
+.modal-content input:focus {
+    border-color: rgba(0, 231, 255, 0.8) !important;
+    box-shadow: 0 0 20px rgba(0, 231, 255, 0.4) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Smooth Scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Loading Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.column-row, .driver-card, .champion-card, .award-card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Enhanced Text Shadows */
+.driver-name, .champion-name, .winner-name, .award-title {
+    text-shadow: 0 0 20px rgba(0, 231, 255, 0.5);
+}
+
+/* Modern Scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #ff003c 0%, #00e7ff 100%);
+    border-radius: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #ff003c 0%, #00e7ff 100%);
+    box-shadow: 0 0 10px rgba(0, 231, 255, 0.5);
+}
+
+/* Enhanced Logo Glow */
+.logo-container img {
+    filter: drop-shadow(0 0 10px rgba(0, 231, 255, 0.5)) !important;
+    transition: all 0.4s ease;
+}
+
+.logo-container:hover img {
+    filter: drop-shadow(0 0 20px rgba(0, 231, 255, 0.8)) drop-shadow(0 0 30px rgba(255, 0, 60, 0.5)) !important;
+    transform: scale(1.05);
+}
+
+/* Floating Animation for Cards */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.champion-card, .award-card.gold {
+    animation: float 6s ease-in-out infinite;
+}
+
+.champion-card:nth-child(2n) {
+    animation-delay: -2s;
+}
+
+.champion-card:nth-child(3n) {
+    animation-delay: -4s;
+}
+
+/* Shimmer Effect */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.qualified-driver, .driver-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.qualified-driver::before, .driver-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.qualified-driver:hover::before, .driver-card:hover::before {
+    left: 100%;
+}
+
+/* Enhanced Text Gradients */
+.stat-value.highlight, .winner-name, .champion-name {
+    background: linear-gradient(135deg, #FFD700 0%, #ff003c 50%, #00e7ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 3s ease infinite;
+    background-size: 200% 100%;
+}
+
+/* Modern Badge Styles */
+.serie-badge {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.serie-badge:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 231, 255, 0.4);
+}
+
+/* Enhanced Empty States */
+.empty-state {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 60px 40px;
+}
+
+/* Modern Input Focus States */
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: rgba(0, 231, 255, 0.8) !important;
+    box-shadow: 
+        0 0 20px rgba(0, 231, 255, 0.4),
+        inset 0 0 10px rgba(0, 231, 255, 0.1) !important;
+}
+
+/* Responsive Enhancements */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 12px 15px;
+    }
+    
+    .nav-links a {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+    
+    .column-row {
+        padding: 12px 0;
+    }
+}
+
+/* Pulse Animation for Active Elements */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+.playoff-status .active,
+.filter-btn.active {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Glow Effects */
+.qualified-driver:hover,
+.driver-card:hover {
+    box-shadow: 
+        0 0 30px rgba(0, 231, 255, 0.4),
+        0 0 60px rgba(255, 0, 60, 0.2);
+}
+
