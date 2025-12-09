@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FASTWAY - Hall of Fame</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style standing Copie.css" />
+    <style>
+        .hof-page {
+            max-width: 1400px;
+            margin: 50px auto;
+            padding: 0 40px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-header h1 {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FFD700 0%, #ff003c 50%, #00e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        .page-header p {
+            color: #888;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .championship-section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 900;
+            color: #00e7ff;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: 2px;
+            border-bottom: 3px solid #00e7ff;
+            padding-bottom: 15px;
+        }
+
+        .champions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .champion-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border: 3px solid #FFD700;
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+        }
+
+        .champion-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .champion-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.4);
+        }
+
+        .trophy-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+        }
+
+        .champion-name {
+            font-size: 28px;
+            font-weight: 900;
+            color: #FFD700;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .champion-year {
+            font-size: 18px;
+            color: #00e7ff;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .champion-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(255, 215, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 900;
+            color: #FFD700;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .records-section {
+            margin-top: 60px;
+        }
+
+        .records-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .record-card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #00e7ff;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .record-card:hover {
+            border-color: #ff003c;
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(255, 0, 60, 0.3);
+        }
+
+        .record-title {
+            font-size: 16px;
+            color: #00e7ff;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .record-value {
+            font-size: 32px;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .record-holder {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #666;
+        }
+
+        .empty-state h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #888;
+        }
+
+        .empty-state p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .legend-section {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border: 2px solid #00e7ff;
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .legend-section h3 {
+            color: #00e7ff;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .legend-section p {
+            color: #ccc;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-container">
+                    <img src="images/Fastwaylogo2 (1).png" alt="FASTWAY Logo">
+                </div>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">STANDING</a>
+                <a href="playoff.html">PLAYOFF</a>
+                <a href="driverlist.html">DRIVER LIST</a>
+                <a href="halloffame.html" style="color: #00e7ff;">HALL OF FAME</a>
+                <a href="award.html">AWARD</a>
+            </nav>
+        </div>
+        <div class="navbar-underline"></div>
+    </header>
+
+    <main class="hof-page">
+        <div class="page-header">
+            <h1>🏆 Hall of Fame 🏆</h1>
+            <p>Celebrating the greatest champions and records in FASTWAY history</p>
+        </div>
+
+        <div id="hallOfFameContent">
+            <!-- Content will be dynamically generated -->
+        </div>
+    </main>
+
+    <script>
+        function loadHallOfFameData() {
+            try {
+                // Load championship history
+                const savedHistory = localStorage.getItem('fastway_championship_history');
+                const history = savedHistory ? JSON.parse(savedHistory) : [];
+
+                // Load current driver data to calculate records
+                const allData = JSON.parse(localStorage.getItem('fastwayAllData') || '[]');
+                const raceState = JSON.parse(localStorage.getItem('fastway_race_state_v2') || '{}');
+
+                // Calculate records from current data
+                const records = calculateRecords(allData, raceState);
+
+                return { history, records };
+            } catch (e) {
+                console.warn('Error loading Hall of Fame data:', e);
+                return { history: [], records: {} };
+            }
+        }
+
+        function calculateRecords(allData, raceState) {
+            const records = {
+                mostWins: { value: 0, holder: 'N/A' },
+                mostChampionships: { value: 0, holder: 'N/A' },
+                bestTime: { value: Infinity, holder: 'N/A', time: '--' },
+                highestPoints: { value: 0, holder: 'N/A' },
+                mostTotalPoints: { value: 0, holder: 'N/A' }
+            };
+
+            allData.forEach(driver => {
+                const wins = parseInt(driver.wins) || 0;
+                const chWins = parseInt(driver.chWins) || 0;
+                const points = parseInt(driver.points) || 0;
+                const total = (wins * 10) + points;
+
+                // Most wins
+                if (wins > records.mostWins.value) {
+                    records.mostWins = { value: wins, holder: driver.name };
+                }
+
+                // Most championships
+                if (chWins > records.mostChampionships.value) {
+                    records.mostChampionships = { value: chWins, holder: driver.name };
+                }
+
+                // Best time
+                if (driver.bestTime && driver.bestTime !== '--' && driver.bestTime !== 'DNF') {
+                    const timeValue = parseFloat(driver.bestTime.replace(',', '.'));
+                    if (!isNaN(timeValue) && timeValue < records.bestTime.value) {
+                        records.bestTime = { value: timeValue, holder: driver.name, time: driver.bestTime };
+                    }
+                }
+
+                // Highest points in single season
+                if (points > records.highestPoints.value) {
+                    records.highestPoints = { value: points, holder: driver.name };
+                }
+
+                // Most total points (wins*10 + points)
+                if (total > records.mostTotalPoints.value) {
+                    records.mostTotalPoints = { value: total, holder: driver.name };
+                }
+            });
+
+            // Check race state for additional stats
+            if (raceState.A && raceState.A.carStats) {
+                Object.entries(raceState.A.carStats).forEach(([name, stats]) => {
+                    const wins = stats.wins || 0;
+                    if (wins > records.mostWins.value) {
+                        records.mostWins = { value: wins, holder: name };
+                    }
+                });
+            }
+
+            if (raceState.B && raceState.B.carStats) {
+                Object.entries(raceState.B.carStats).forEach(([name, stats]) => {
+                    const wins = stats.wins || 0;
+                    if (wins > records.mostWins.value) {
+                        records.mostWins = { value: wins, holder: name };
+                    }
+                });
+            }
+
+            return records;
+        }
+
+        function renderHallOfFame() {
+            const { history, records } = loadHallOfFameData();
+            const content = document.getElementById('hallOfFameContent');
+
+            let html = '';
+
+            // Championship History Section
+            html += '<div class="championship-section">';
+            html += '<h2 class="section-title">Championship History</h2>';
+
+            if (history.length === 0) {
+                html += `
+                    <div class="empty-state">
+                        <h2>No Championships Yet</h2>
+                        <p>Complete seasons to see championship winners here.</p>
+                        <p>Champions will be automatically added after each completed season.</p>
+                    </div>
+                `;
+            } else {
+                html += '<div class="champions-grid">';
+                history.forEach((champion, index) => {
+                    html += `
+                        <div class="champion-card">
+                            <div class="trophy-icon">🏆</div>
+                            <div class="champion-name">${champion.name || 'Unknown'}</div>
+                            <div class="champion-year">Season ${champion.year || 'N/A'}</div>
+                            <div class="champion-stats">
+                                <div class="stat">
+                                    <div class="stat-value">${champion.wins || 0}</div>
+                                    <div class="stat-label">Wins</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">${champion.points || 0}</div>
+                                    <div class="stat-label">Points</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">${champion.serie || 'N/A'}</div>
+                                    <div class="stat-label">Serie</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+            html += '</div>';
+
+            // Records Section
+            html += '<div class="records-section">';
+            html += '<h2 class="section-title">All-Time Records</h2>';
+            html += '<div class="records-list">';
+
+            html += `
+                <div class="record-card">
+                    <div class="record-title">Most Wins</div>
+                    <div class="record-value">${records.mostWins.value}</div>
+                    <div class="record-holder">${records.mostWins.holder}</div>
+                </div>
+            `;
+
+            html += `
+                <div class="record-card">
+                    <div class="record-title">Most Championships</div>
+                    <div class="record-value">${records.mostChampionships.value}</div>
+                    <div class="record-holder">${records.mostChampionships.holder}</div>
+                </div>
+            `;
+
+            html += `
+                <div class="record-card">
+                    <div class="record-title">Best Time</div>
+                    <div class="record-value">${records.bestTime.time}</div>
+                    <div class="record-holder">${records.bestTime.holder}</div>
+                </div>
+            `;
+
+            html += `
+                <div class="record-card">
+                    <div class="record-title">Highest Points</div>
+                    <div class="record-value">${records.highestPoints.value}</div>
+                    <div class="record-holder">${records.highestPoints.holder}</div>
+                </div>
+            `;
+
+            html += `
+                <div class="record-card">
+                    <div class="record-title">Most Total Points</div>
+                    <div class="record-value">${records.mostTotalPoints.value}</div>
+                    <div class="record-holder">${records.mostTotalPoints.holder}</div>
+                </div>
+            `;
+
+            html += '</div>';
+            html += '</div>';
+
+            // Legend
+            html += `
+                <div class="legend-section">
+                    <h3>About the Hall of Fame</h3>
+                    <p>
+                        The Hall of Fame celebrates the greatest achievements in FASTWAY racing history.
+                        Champions are automatically inducted after winning a championship, and records
+                        are updated in real-time as drivers compete throughout the season.
+                    </p>
+                </div>
+            `;
+
+            content.innerHTML = html;
+        }
+
+        // Function to add a champion (called from other pages when a season ends)
+        window.addChampionToHallOfFame = function(name, year, wins, points, serie) {
+            try {
+                const savedHistory = localStorage.getItem('fastway_championship_history');
+                const history = savedHistory ? JSON.parse(savedHistory) : [];
+                
+                history.push({
+                    name,
+                    year,
+                    wins,
+                    points,
+                    serie,
+                    date: new Date().toISOString()
+                });
+
+                // Sort by year (newest first)
+                history.sort((a, b) => (b.year || 0) - (a.year || 0));
+
+                localStorage.setItem('fastway_championship_history', JSON.stringify(history));
+                renderHallOfFame(); // Refresh display
+            } catch (e) {
+                console.error('Error adding champion:', e);
+            }
+        };
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderHallOfFame();
+            // Refresh every 10 seconds to show updates
+            setInterval(renderHallOfFame, 10000);
+        });
+    </script>
+</body>
+
+</html>
+

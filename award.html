@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FASTWAY - Awards</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style standing Copie.css" />
+    <style>
+        .award-page {
+            max-width: 1400px;
+            margin: 50px auto;
+            padding: 0 40px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-header h1 {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FFD700 0%, #ff003c 50%, #00e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .award-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border: 3px solid #00e7ff;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 25px rgba(0, 231, 255, 0.2);
+        }
+
+        .award-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 40px rgba(0, 231, 255, 0.4);
+            border-color: #ff003c;
+        }
+
+        .award-card.gold {
+            border-color: #FFD700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .award-card.gold:hover {
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
+        }
+
+        .award-icon {
+            font-size: 70px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
+        }
+
+        .award-title {
+            font-size: 24px;
+            font-weight: 900;
+            color: #00e7ff;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .award-card.gold .award-title {
+            color: #FFD700;
+        }
+
+        .award-description {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .award-winner {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .winner-name {
+            font-size: 28px;
+            font-weight: 900;
+            color: #FFD700;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .winner-stats {
+            font-size: 16px;
+            color: #00e7ff;
+            margin-top: 10px;
+        }
+
+        .no-winner {
+            font-size: 16px;
+            color: #666;
+            font-style: italic;
+            margin-top: 15px;
+        }
+
+        .award-category {
+            margin-bottom: 60px;
+        }
+
+        .category-title {
+            font-size: 32px;
+            font-weight: 900;
+            color: #00e7ff;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: 2px;
+            border-bottom: 3px solid #00e7ff;
+            padding-bottom: 15px;
+        }
+
+        .season-awards {
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid #00e7ff;
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .season-awards h3 {
+            color: #00e7ff;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #666;
+        }
+
+        .empty-state h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #888;
+        }
+
+        .empty-state p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-container">
+                    <img src="images/Fastwaylogo2 (1).png" alt="FASTWAY Logo">
+                </div>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">STANDING</a>
+                <a href="playoff.html">PLAYOFF</a>
+                <a href="driverlist.html">DRIVER LIST</a>
+                <a href="halloffame.html">HALL OF FAME</a>
+                <a href="award.html" style="color: #00e7ff;">AWARD</a>
+            </nav>
+        </div>
+        <div class="navbar-underline"></div>
+    </header>
+
+    <main class="award-page">
+        <div class="page-header">
+            <h1>🏅 Awards & Achievements 🏅</h1>
+        </div>
+
+        <div id="awardsContent">
+            <!-- Content will be dynamically generated -->
+        </div>
+    </main>
+
+    <script>
+        function loadAwardsData() {
+            try {
+                const allData = JSON.parse(localStorage.getItem('fastwayAllData') || '[]');
+                const raceState = JSON.parse(localStorage.getItem('fastway_race_state_v2') || '{}');
+                const playoffData = JSON.parse(localStorage.getItem('fastway_playoff_data') || '{"A":{"qualified":[]},"B":{"qualified":[]}}');
+                
+                return { allData, raceState, playoffData };
+            } catch (e) {
+                console.warn('Error loading awards data:', e);
+                return { allData: [], raceState: {}, playoffData: { A: { qualified: [] }, B: { qualified: [] } } };
+            }
+        }
+
+        function calculateAwards(allData, raceState, playoffData) {
+            const awards = {
+                // Performance Awards
+                fastestLap: { winner: null, value: Infinity, time: '--' },
+                mostWins: { winner: null, value: 0 },
+                mostPoles: { winner: null, value: 0 },
+                mostConsistent: { winner: null, value: 0 },
+                
+                // Championship Awards
+                seriesAChampion: { winner: null, points: 0 },
+                seriesBChampion: { winner: null, points: 0 },
+                overallChampion: { winner: null, points: 0 },
+                
+                // Special Awards
+                rookieOfTheYear: { winner: null, value: 0 },
+                comebackOfTheYear: { winner: null, value: 0 },
+                mostImproved: { winner: null, value: 0 }
+            };
+
+            // Process all drivers
+            allData.forEach(driver => {
+                const name = driver.name;
+                const wins = parseInt(driver.wins) || 0;
+                const points = parseInt(driver.points) || 0;
+                const total = (wins * 10) + points;
+                const bestTime = driver.bestTime;
+
+                // Most Wins
+                if (wins > awards.mostWins.value) {
+                    awards.mostWins = { winner: name, value: wins };
+                }
+
+                // Fastest Lap
+                if (bestTime && bestTime !== '--' && bestTime !== 'DNF') {
+                    const timeValue = parseFloat(bestTime.replace(',', '.'));
+                    if (!isNaN(timeValue) && timeValue < awards.fastestLap.value) {
+                        awards.fastestLap = { winner: name, value: timeValue, time: bestTime };
+                    }
+                }
+
+                // Overall Champion (highest total points)
+                if (total > awards.overallChampion.points) {
+                    awards.overallChampion = { winner: name, points: total };
+                }
+            });
+
+            // Determine Series Champions (top of each series)
+            const serieADrivers = [];
+            const serieBDrivers = [];
+
+            allData.forEach((driver, index) => {
+                const isSerieA = index < allData.length / 2;
+                const total = (parseInt(driver.wins) || 0) * 10 + (parseInt(driver.points) || 0);
+                
+                if (isSerieA) {
+                    serieADrivers.push({ name: driver.name, total });
+                } else {
+                    serieBDrivers.push({ name: driver.name, total });
+                }
+            });
+
+            serieADrivers.sort((a, b) => b.total - a.total);
+            serieBDrivers.sort((a, b) => b.total - a.total);
+
+            if (serieADrivers.length > 0) {
+                awards.seriesAChampion = {
+                    winner: serieADrivers[0].name,
+                    points: serieADrivers[0].total
+                };
+            }
+
+            if (serieBDrivers.length > 0) {
+                awards.seriesBChampion = {
+                    winner: serieBDrivers[0].name,
+                    points: serieBDrivers[0].total
+                };
+            }
+
+            // Check race state for additional stats
+            if (raceState.A && raceState.A.carStats) {
+                Object.entries(raceState.A.carStats).forEach(([name, stats]) => {
+                    const wins = stats.wins || 0;
+                    if (wins > awards.mostWins.value) {
+                        awards.mostWins = { winner: name, value: wins };
+                    }
+                });
+            }
+
+            if (raceState.B && raceState.B.carStats) {
+                Object.entries(raceState.B.carStats).forEach(([name, stats]) => {
+                    const wins = stats.wins || 0;
+                    if (wins > awards.mostWins.value) {
+                        awards.mostWins = { winner: name, value: wins };
+                    }
+                });
+            }
+
+            return awards;
+        }
+
+        function renderAwards() {
+            const { allData, raceState, playoffData } = loadAwardsData();
+            const awards = calculateAwards(allData, raceState, playoffData);
+            const content = document.getElementById('awardsContent');
+
+            if (allData.length === 0) {
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <h2>No Awards Available Yet</h2>
+                        <p>Complete races and seasons to unlock awards and achievements.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+
+            // Performance Awards
+            html += '<div class="award-category">';
+            html += '<h2 class="category-title">Performance Awards</h2>';
+            html += '<div class="awards-grid">';
+
+            // Fastest Lap
+            html += `
+                <div class="award-card">
+                    <div class="award-icon">⚡</div>
+                    <div class="award-title">Fastest Lap</div>
+                    <div class="award-description">Awarded to the driver with the best lap time recorded during qualifications or races.</div>
+                    <div class="award-winner">
+                        ${awards.fastestLap.winner ? `
+                            <div class="winner-name">${awards.fastestLap.winner}</div>
+                            <div class="winner-stats">Time: ${awards.fastestLap.time}</div>
+                        ` : '<div class="no-winner">No winner yet</div>'}
+                    </div>
+                </div>
+            `;
+
+            // Most Wins
+            html += `
+                <div class="award-card gold">
+                    <div class="award-icon">👑</div>
+                    <div class="award-title">Most Wins</div>
+                    <div class="award-description">Awarded to the driver with the highest number of race victories.</div>
+                    <div class="award-winner">
+                        ${awards.mostWins.winner ? `
+                            <div class="winner-name">${awards.mostWins.winner}</div>
+                            <div class="winner-stats">${awards.mostWins.value} Wins</div>
+                        ` : '<div class="no-winner">No winner yet</div>'}
+                    </div>
+                </div>
+            `;
+
+            // Most Consistent
+            html += `
+                <div class="award-card">
+                    <div class="award-icon">📊</div>
+                    <div class="award-title">Most Consistent</div>
+                    <div class="award-description">Awarded to the driver with the best average performance across all races.</div>
+                    <div class="award-winner">
+                        <div class="no-winner">Calculated at season end</div>
+                    </div>
+                </div>
+            `;
+
+            html += '</div>';
+            html += '</div>';
+
+            // Championship Awards
+            html += '<div class="award-category">';
+            html += '<h2 class="category-title">Championship Awards</h2>';
+            html += '<div class="awards-grid">';
+
+            // Series A Champion
+            html += `
+                <div class="award-card gold">
+                    <div class="award-icon">🏆</div>
+                    <div class="award-title">Série A Champion</div>
+                    <div class="award-description">Awarded to the driver who finishes first in the Série A standings.</div>
+                    <div class="award-winner">
+                        ${awards.seriesAChampion.winner ? `
+                            <div class="winner-name">${awards.seriesAChampion.winner}</div>
+                            <div class="winner-stats">${awards.seriesAChampion.points} Points</div>
+                        ` : '<div class="no-winner">No champion yet</div>'}
+                    </div>
+                </div>
+            `;
+
+            // Series B Champion
+            html += `
+                <div class="award-card gold">
+                    <div class="award-icon">🏆</div>
+                    <div class="award-title">Série B Champion</div>
+                    <div class="award-description">Awarded to the driver who finishes first in the Série B standings.</div>
+                    <div class="award-winner">
+                        ${awards.seriesBChampion.winner ? `
+                            <div class="winner-name">${awards.seriesBChampion.winner}</div>
+                            <div class="winner-stats">${awards.seriesBChampion.points} Points</div>
+                        ` : '<div class="no-winner">No champion yet</div>'}
+                    </div>
+                </div>
+            `;
+
+            // Overall Champion
+            html += `
+                <div class="award-card gold">
+                    <div class="award-icon">🌟</div>
+                    <div class="award-title">Overall Champion</div>
+                    <div class="award-description">Awarded to the driver with the highest total points across both series.</div>
+                    <div class="award-winner">
+                        ${awards.overallChampion.winner ? `
+                            <div class="winner-name">${awards.overallChampion.winner}</div>
+                            <div class="winner-stats">${awards.overallChampion.points} Points</div>
+                        ` : '<div class="no-winner">No champion yet</div>'}
+                    </div>
+                </div>
+            `;
+
+            html += '</div>';
+            html += '</div>';
+
+            // Special Awards
+            html += '<div class="award-category">';
+            html += '<h2 class="category-title">Special Awards</h2>';
+            html += '<div class="awards-grid">';
+
+            html += `
+                <div class="award-card">
+                    <div class="award-icon">🌱</div>
+                    <div class="award-title">Rookie of the Year</div>
+                    <div class="award-description">Awarded to the best performing new driver in their first season.</div>
+                    <div class="award-winner">
+                        <div class="no-winner">Awarded at season end</div>
+                    </div>
+                </div>
+            `;
+
+            html += `
+                <div class="award-card">
+                    <div class="award-icon">📈</div>
+                    <div class="award-title">Most Improved</div>
+                    <div class="award-description">Awarded to the driver who shows the greatest improvement throughout the season.</div>
+                    <div class="award-winner">
+                        <div class="no-winner">Awarded at season end</div>
+                    </div>
+                </div>
+            `;
+
+            html += `
+                <div class="award-card">
+                    <div class="award-icon">💪</div>
+                    <div class="award-title">Comeback of the Year</div>
+                    <div class="award-description">Awarded to the driver who makes the most impressive comeback during the season.</div>
+                    <div class="award-winner">
+                        <div class="no-winner">Awarded at season end</div>
+                    </div>
+                </div>
+            `;
+
+            html += '</div>';
+            html += '</div>';
+
+            content.innerHTML = html;
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderAwards();
+            // Refresh every 10 seconds to show updates
+            setInterval(renderAwards, 10000);
+        });
+    </script>
+</body>
+
+</html>
+

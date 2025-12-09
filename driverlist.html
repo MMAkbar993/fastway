@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FASTWAY - Driver List</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style standing Copie.css" />
+    <style>
+        .driverlist-page {
+            max-width: 1400px;
+            margin: 50px auto;
+            padding: 0 40px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            font-weight: 900;
+            color: #ff003c;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(255, 0, 60, 0.5);
+        }
+
+        .filter-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: rgba(0, 231, 255, 0.1);
+            border: 2px solid #00e7ff;
+            border-radius: 8px;
+            color: #00e7ff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .filter-btn:hover {
+            background: rgba(0, 231, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(0, 231, 255, 0.4);
+        }
+
+        .filter-btn.active {
+            background: #00e7ff;
+            color: #000;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 30px;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #00e7ff;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 16px;
+            box-shadow: 0 0 20px rgba(0, 231, 255, 0.2);
+        }
+
+        .search-box:focus {
+            outline: none;
+            box-shadow: 0 0 30px rgba(0, 231, 255, 0.4);
+        }
+
+        .drivers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .driver-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border: 2px solid #00e7ff;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 231, 255, 0.1);
+        }
+
+        .driver-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 231, 255, 0.3);
+            border-color: #ff003c;
+        }
+
+        .driver-card.serie-a {
+            border-color: #00e7ff;
+        }
+
+        .driver-card.serie-b {
+            border-color: #ff003c;
+        }
+
+        .driver-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #333;
+        }
+
+        .driver-name {
+            font-size: 24px;
+            font-weight: 900;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .driver-number {
+            font-size: 32px;
+            font-weight: 900;
+            color: #00e7ff;
+            text-shadow: 0 0 10px rgba(0, 231, 255, 0.5);
+        }
+
+        .driver-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 900;
+            color: #00e7ff;
+        }
+
+        .stat-value.highlight {
+            color: #ff003c;
+        }
+
+        .stat-value.gold {
+            color: #FFD700;
+        }
+
+        .serie-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+
+        .serie-badge.a {
+            background: rgba(0, 231, 255, 0.2);
+            color: #00e7ff;
+            border: 1px solid #00e7ff;
+        }
+
+        .serie-badge.b {
+            background: rgba(255, 0, 60, 0.2);
+            color: #ff003c;
+            border: 1px solid #ff003c;
+        }
+
+        .no-drivers {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+            font-size: 18px;
+        }
+
+        .driver-card.eliminated {
+            opacity: 0.5;
+            filter: grayscale(100%);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-container">
+                    <img src="images/Fastwaylogo2 (1).png" alt="FASTWAY Logo">
+                </div>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">STANDING</a>
+                <a href="playoff.html">PLAYOFF</a>
+                <a href="driverlist.html" style="color: #00e7ff;">DRIVER LIST</a>
+                <a href="halloffame.html">HALL OF FAME</a>
+                <a href="award.html">AWARD</a>
+            </nav>
+        </div>
+        <div class="navbar-underline"></div>
+    </header>
+
+    <main class="driverlist-page">
+        <div class="page-header">
+            <h1>Driver List</h1>
+        </div>
+
+        <input type="text" class="search-box" id="searchInput" placeholder="Search drivers by name...">
+
+        <div class="filter-controls">
+            <button class="filter-btn active" data-filter="all">All Drivers</button>
+            <button class="filter-btn" data-filter="serie-a">Série A</button>
+            <button class="filter-btn" data-filter="serie-b">Série B</button>
+            <button class="filter-btn" data-filter="playoff">Playoff Qualified</button>
+        </div>
+
+        <div id="driversContainer" class="drivers-grid">
+            <!-- Drivers will be dynamically loaded -->
+        </div>
+    </main>
+
+    <script>
+        function loadAllDrivers() {
+            try {
+                const allData = JSON.parse(localStorage.getItem('fastwayAllData') || '[]');
+                const raceState = JSON.parse(localStorage.getItem('fastway_race_state_v2') || '{}');
+                const playoffData = JSON.parse(localStorage.getItem('fastway_playoff_data') || '{"A":{"qualified":[]},"B":{"qualified":[]}}');
+                
+                const drivers = [];
+                
+                // Determine which series each driver belongs to
+                const serieADrivers = new Set();
+                const serieBDrivers = new Set();
+                
+                // Try to determine from DOM structure if available
+                // For now, we'll use a simple heuristic or allow manual assignment
+                // In a real scenario, this would be stored in localStorage
+                
+                allData.forEach((driver, index) => {
+                    // Simple heuristic: first half = Serie A, second half = Serie B
+                    // In production, this should come from saved state
+                    const isSerieA = index < allData.length / 2;
+                    if (isSerieA) {
+                        serieADrivers.add(driver.name);
+                    } else {
+                        serieBDrivers.add(driver.name);
+                    }
+
+                    const statsA = raceState.A?.carStats?.[driver.name] || {};
+                    const statsB = raceState.B?.carStats?.[driver.name] || {};
+                    const combinedWins = (statsA.wins || 0) + (statsB.wins || 0);
+                    const combinedLosses = (statsA.losses || 0) + (statsB.losses || 0);
+                    
+                    const totalRaces = combinedWins + combinedLosses;
+                    const winPercentage = totalRaces > 0 ? ((combinedWins / totalRaces) * 100).toFixed(1) : 0;
+
+                    const isPlayoffQualified = 
+                        playoffData.A.qualified.includes(driver.name) || 
+                        playoffData.B.qualified.includes(driver.name);
+
+                    drivers.push({
+                        name: driver.name,
+                        number: driver.number || '',
+                        points: parseInt(driver.points) || 0,
+                        wins: parseInt(driver.wins) || 0,
+                        chWins: parseInt(driver.chWins) || 0,
+                        bestTime: driver.bestTime || '--',
+                        total: (parseInt(driver.wins) || 0) * 10 + (parseInt(driver.points) || 0),
+                        winPercentage: winPercentage,
+                        totalRaces: totalRaces,
+                        serie: isSerieA ? 'A' : 'B',
+                        playoffQualified: isPlayoffQualified
+                    });
+                });
+
+                return drivers;
+            } catch (e) {
+                console.warn('Error loading drivers:', e);
+                return [];
+            }
+        }
+
+        function renderDrivers(drivers, filter = 'all', searchTerm = '') {
+            const container = document.getElementById('driversContainer');
+            
+            if (drivers.length === 0) {
+                container.innerHTML = '<div class="no-drivers">No driver data available. Complete some races first!</div>';
+                return;
+            }
+
+            let filtered = drivers;
+
+            // Apply filter
+            if (filter === 'serie-a') {
+                filtered = filtered.filter(d => d.serie === 'A');
+            } else if (filter === 'serie-b') {
+                filtered = filtered.filter(d => d.serie === 'B');
+            } else if (filter === 'playoff') {
+                filtered = filtered.filter(d => d.playoffQualified);
+            }
+
+            // Apply search
+            if (searchTerm) {
+                const term = searchTerm.toLowerCase();
+                filtered = filtered.filter(d => d.name.toLowerCase().includes(term));
+            }
+
+            // Sort by total points (descending)
+            filtered.sort((a, b) => b.total - a.total);
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="no-drivers">No drivers match your search criteria.</div>';
+                return;
+            }
+
+            container.innerHTML = filtered.map(driver => `
+                <div class="driver-card serie-${driver.serie.toLowerCase()} ${driver.playoffQualified ? 'playoff' : ''}">
+                    <div class="driver-header">
+                        <div class="driver-name">${driver.name}</div>
+                        ${driver.number ? `<div class="driver-number">#${driver.number}</div>` : ''}
+                    </div>
+                    <span class="serie-badge ${driver.serie.toLowerCase()}">Série ${driver.serie}</span>
+                    ${driver.playoffQualified ? '<span class="serie-badge a" style="margin-left: 10px;">Playoff</span>' : ''}
+                    <div class="driver-stats">
+                        <div class="stat-item">
+                            <div class="stat-label">Total Points</div>
+                            <div class="stat-value highlight">${driver.total}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Wins</div>
+                            <div class="stat-value">${driver.wins}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">CH Wins</div>
+                            <div class="stat-value gold">${driver.chWins}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Win %</div>
+                            <div class="stat-value">${driver.winPercentage}%</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Best Time</div>
+                            <div class="stat-value">${driver.bestTime}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Races</div>
+                            <div class="stat-value">${driver.totalRaces}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            const drivers = loadAllDrivers();
+            let currentFilter = 'all';
+            let currentSearch = '';
+
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    renderDrivers(drivers, currentFilter, currentSearch);
+                });
+            });
+
+            // Search input
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                currentSearch = e.target.value;
+                renderDrivers(drivers, currentFilter, currentSearch);
+            });
+
+            // Initial render
+            renderDrivers(drivers, currentFilter, currentSearch);
+
+            // Refresh every 10 seconds
+            setInterval(() => {
+                const updatedDrivers = loadAllDrivers();
+                renderDrivers(updatedDrivers, currentFilter, currentSearch);
+            }, 10000);
+        });
+    </script>
+</body>
+
+</html>
+

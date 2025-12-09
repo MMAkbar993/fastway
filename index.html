@@ -13,11 +13,11 @@
         <div class="navbar">
             <a href="index.html" class="logo">
                 <div class="logo-container">
-                    <img src="Fastwaylogo2.png" alt="FASTWAY Logo">
+                    <img src="images/Fastwaylogo2 (1).png" alt="FASTWAY Logo">
                 </div>
             </a>
             <nav class="nav-links">
-                <a href="standing Copie.html">STANDING</a>
+                <a href="index.html" style="color: #00e7ff;">STANDING</a>
                 <a href="playoff.html">PLAYOFF</a>
                 <a href="driverlist.html">DRIVER LIST</a>
                 <a href="halloffame.html">HALL OF FAME</a>
@@ -1746,6 +1746,7 @@
 
             const currentStructure = PLAYOFF_STRUCTURE[playoffState.currentRoundIndex];
             playoffState.currentRaceInRound++;
+            saveRaceState(); // Save updated playoff state
 
             // Vérifier si le round est fini
             if (playoffState.currentRaceInRound >= currentStructure.races) {
@@ -1788,6 +1789,7 @@
                 // Passer au round suivant
                 playoffState.currentRoundIndex++;
                 playoffState.currentRaceInRound = 0;
+                saveRaceState(); // Save updated playoff state
 
                 // Vérifier si c'était le dernier round de division (Finale Division finie ?)
                 if (playoffState.currentRoundIndex >= PLAYOFF_STRUCTURE.length) {
@@ -1808,12 +1810,14 @@
                     `${currentStructure.name}<br>Course ${playoffState.currentRaceInRound} / ${currentStructure.races} terminée.`,
                     "PLAYOFF PROGRESS"
                 );
+                saveRaceState(); // Save updated playoff state
                 resetForNextRace();
             }
         }
 
         function setupFastwayFinal() {
             playoffState.isFinal = true;
+            saveRaceState(); // Save updated playoff state
             const winnerA = playoffData.A.qualified[0];
             const winnerB = playoffData.B.qualified[0];
 
@@ -2216,6 +2220,9 @@
                 playoffData
             };
             localStorage.setItem(RACE_STATE_KEY, JSON.stringify(state));
+            // Also save playoff state and data separately for playoff page
+            localStorage.setItem('fastway_playoff_state', JSON.stringify(playoffState));
+            localStorage.setItem('fastway_playoff_data', JSON.stringify(playoffData));
         }
 
         function loadRaceState() {
@@ -2245,6 +2252,26 @@
                 }
 
                 if (s.raceStates) raceStates = s.raceStates;
+                
+                // Load playoff state and data
+                if (s.playoffState) playoffState = s.playoffState;
+                if (s.playoffData) playoffData = s.playoffData;
+                
+                // Also try to load from separate keys (for playoff page compatibility)
+                try {
+                    const savedPlayoffState = localStorage.getItem('fastway_playoff_state');
+                    if (savedPlayoffState) {
+                        const parsed = JSON.parse(savedPlayoffState);
+                        playoffState = { ...playoffState, ...parsed };
+                    }
+                    const savedPlayoffData = localStorage.getItem('fastway_playoff_data');
+                    if (savedPlayoffData) {
+                        const parsed = JSON.parse(savedPlayoffData);
+                        playoffData = { ...playoffData, ...parsed };
+                    }
+                } catch (e) {
+                    console.warn('Error loading playoff state/data:', e);
+                }
 
                 // Réappliquer les stats sauvegardées sur le tableau (inchangé)
                 ['A', 'B'].forEach(seriesKey => {
