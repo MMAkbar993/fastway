@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FASTWAY - Driver Detail</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style standing Copie.css" />
+    <link rel="stylesheet" href="css/modern-styles.css" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="images/favicon_io/site.webmanifest">
+    <style>
+        .driver-detail-page {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 40px;
+        }
+
+        .driver-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .driver-header h1 {
+            font-size: 48px;
+            font-weight: 900;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .driver-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 900;
+            color: #00e7ff;
+        }
+
+        .stat-value.highlight {
+            color: #ff003c;
+        }
+
+        .stat-value.gold {
+            color: #FFD700;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #00e7ff 0%, #0099cc 100%);
+            color: #000;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 231, 255, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-container">
+                    <img src="images/Fastwaylogo2 (1).png" alt="FASTWAY Logo">
+                </div>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">STANDING</a>
+                <a href="playoff.html">PLAYOFF</a>
+                <a href="driverlist.html">DRIVER LIST</a>
+                <a href="halloffame.html">HALL OF FAME</a>
+                <a href="award.html">AWARD</a>
+            </nav>
+        </div>
+        <div class="navbar-underline"></div>
+    </header>
+
+    <main class="driver-detail-page">
+        <a href="driverlist.html" class="back-button">← Back to Driver List</a>
+        
+        <div class="driver-header">
+            <h1 id="driverName">Loading...</h1>
+        </div>
+
+        <div id="driverContent">
+            <!-- Content will be dynamically generated -->
+        </div>
+    </main>
+
+    <script>
+        function getDriverFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('driver');
+        }
+
+        function loadDriverData(driverName) {
+            try {
+                const allData = JSON.parse(localStorage.getItem('fastwayAllData') || '[]');
+                const raceState = JSON.parse(localStorage.getItem('fastway_race_state_v2') || '{}');
+                const playoffData = JSON.parse(localStorage.getItem('fastway_playoff_data') || '{"A":{"qualified":[]},"B":{"qualified":[]}}');
+                
+                const driver = allData.find(d => d.name === driverName);
+                if (!driver) return null;
+
+                const statsA = raceState.A?.carStats?.[driverName] || {};
+                const statsB = raceState.B?.carStats?.[driverName] || {};
+                const combinedWins = (statsA.wins || 0) + (statsB.wins || 0);
+                const combinedLosses = (statsA.losses || 0) + (statsB.losses || 0);
+                
+                const totalRaces = combinedWins + combinedLosses;
+                const winPercentage = totalRaces > 0 ? ((combinedWins / totalRaces) * 100).toFixed(1) : 0;
+
+                const isPlayoffQualified = 
+                    playoffData.A.qualified.includes(driverName) || 
+                    playoffData.B.qualified.includes(driverName);
+
+                return {
+                    name: driver.name,
+                    number: driver.number || '',
+                    points: parseInt(driver.points) || 0,
+                    wins: parseInt(driver.wins) || 0,
+                    chWins: parseInt(driver.chWins) || 0,
+                    bestTime: driver.bestTime || '--',
+                    total: (parseInt(driver.wins) || 0) * 10 + (parseInt(driver.points) || 0),
+                    winPercentage: winPercentage,
+                    totalRaces: totalRaces,
+                    playoffQualified: isPlayoffQualified
+                };
+            } catch (e) {
+                console.warn('Error loading driver data:', e);
+                return null;
+            }
+        }
+
+        function renderDriverDetail(driver) {
+            if (!driver) {
+                document.getElementById('driverContent').innerHTML = '<p>Driver not found.</p>';
+                return;
+            }
+
+            document.getElementById('driverName').textContent = driver.name;
+            
+            const html = `
+                <div class="driver-stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Points</div>
+                        <div class="stat-value highlight">${driver.total}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Wins</div>
+                        <div class="stat-value">${driver.wins}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Championship Wins</div>
+                        <div class="stat-value gold">${driver.chWins}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Win Percentage</div>
+                        <div class="stat-value">${driver.winPercentage}%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Best Time</div>
+                        <div class="stat-value">${driver.bestTime}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Races</div>
+                        <div class="stat-value">${driver.totalRaces}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Points</div>
+                        <div class="stat-value">${driver.points}</div>
+                    </div>
+                    ${driver.number ? `
+                    <div class="stat-card">
+                        <div class="stat-label">Number</div>
+                        <div class="stat-value">#${driver.number}</div>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+
+            document.getElementById('driverContent').innerHTML = html;
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            const driverName = getDriverFromURL();
+            if (driverName) {
+                const driver = loadDriverData(driverName);
+                renderDriverDetail(driver);
+            } else {
+                document.getElementById('driverContent').innerHTML = '<p>No driver specified.</p>';
+            }
+        });
+    </script>
+</body>
+
+</html>
+

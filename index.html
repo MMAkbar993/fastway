@@ -18,7 +18,7 @@
         <div class="navbar">
             <a href="index.html" class="logo">
                 <div class="logo-container">
-                    <img src="images/Fastwaylogo2 (1).png" alt="FASTWAY Logo" style="filter: drop-shadow(0 0 10px rgba(0, 231, 255, 0.5));">
+                    <img src="images/Fastwaylogo2 (1).png" alt="FASTWAY Logo">
                 </div>
             </a>
             <nav class="nav-links">
@@ -35,10 +35,10 @@
 
     <main class="standing-page">
         <div class="top-line">
-            <h1>Fastway A serie standing</h1>
+            <h1>Fastway <span id="serie-indicator">A</span>/B Standing</h1>
             <div class="race-buttons">
-                <button class="btn start-calif">START CALIF</button>
-                <button id="startRaceBtn" class="btn start-race">START RACE</button>
+                <button class="btn start-calif">START</button>
+                <button id="startRaceBtn" class="btn start-race">SERIES</button>
             </div>
             <div class="vertical-divider"></div>
             <div class="top-buttons-wrapper">
@@ -52,15 +52,15 @@
         <div class="title-underline"></div>
 
         <div class="column-header">
-            <div>Pos</div>
+            <div class="sortable" data-sort="pos">Pos</div>
             <div>No.</div>
-            <div>Car</div>
-            <div>Point (Calif)</div>
-            <div>Win</div>
-            <div>CH Win</div>
-            <div>Best Time</div>
-            <div>Win%</div>
-            <div>Total</div>
+            <div class="sortable" data-sort="car">Car</div>
+            <div class="sortable" data-sort="points">Point (Calif)</div>
+            <div class="sortable" data-sort="win">Win</div>
+            <div class="sortable" data-sort="chwin">CH Win</div>
+            <div class="sortable" data-sort="besttime">Best Time</div>
+            <div class="sortable" data-sort="winpct">Win%</div>
+            <div class="sortable" data-sort="total">Total</div>
             <div class="last-time" style="display:none;">Last Time</div>
         </div>
 
@@ -689,9 +689,8 @@
     </main>
 
     <div class="admin-buttons">
-        <button id="undoQualifBtn">Annuler dernière qualification</button>
-        <button id="resetRaceBtn">Recommencer les qualification</button>
-        <button id="resetSeasonBtn">Redémarrer la saison</button>
+        <button id="undoQualifBtn" class="btn-red">Cancel Last Qualifying</button>
+        <button id="undoDuelBtn" class="btn-red">Cancel Last Duel</button>
     </div>
 
     <script>
@@ -700,8 +699,9 @@
         const title = document.querySelector(".top-line h1");
         const btnA = document.querySelector("#btn-a");
         const btnB = document.querySelector("#btn-b");
+        const serieIndicator = document.getElementById("serie-indicator");
         btnA.addEventListener("click", () => {
-            title.textContent = "FASTWAY A serie standing";
+            serieIndicator.textContent = "A";
             serieA.classList.remove("hidden");
             serieB.classList.add("hidden");
             btnA.classList.add("active");
@@ -709,7 +709,7 @@
         });
 
         btnB.addEventListener("click", () => {
-            title.textContent = "FASTWAY B serie standing";
+            serieIndicator.textContent = "B";
             serieA.classList.add("hidden");
             serieB.classList.remove("hidden");
             btnB.classList.add("active");
@@ -1887,7 +1887,7 @@
                 Object.assign(counterEl.style, {
                     position: 'absolute',
                     top: '-15px',
-                    right: '-213px',
+                    right: '-150px',
                     width: 'auto',
                     whiteSpace: 'nowrap',
                     fontSize: '15px',
@@ -1896,7 +1896,8 @@
                     letterSpacing: '1.2px',
                     pointerEvents: 'none',
                     textTransform: 'uppercase',
-                    textAlign: 'right'
+                    textAlign: 'right',
+                    color: '#fff'
                 });
 
                 buttonsContainer.appendChild(counterEl);
@@ -1933,10 +1934,10 @@
             if (counterEl) {
                 // J'utilise le format: RACES 1 / 14 (ou ROUND 1 1 / 3)
                 counterEl.innerHTML = `
-            <span style="color:#000; font-size:15px; margin-right:5px;">${raceLabelText}</span>
-            <span style="color:#000; font-size:16px;">${currentRace}</span>
-            <span style="color:#000; margin:0 1px; font-size:16px;">/</span> 
-            <span style="color:#000; font-size:16px;">${maxRaces}</span>
+            <span style="color:#fff; font-size:15px; margin-right:5px;">${raceLabelText}</span>
+            <span style="color:#fff; font-size:16px;">${currentRace}</span>
+            <span style="color:#fff; margin:0 1px; font-size:16px;">/</span> 
+            <span style="color:#fff; font-size:16px;">${maxRaces}</span>
         `;
             }
         }
@@ -2854,8 +2855,39 @@
             const [car1, car2] = duel;
             // Appelle le modal avec le nom de round figé
             showDuelModal(car1, car2, roundName, (winner, manualTimeForWinner) => {
+                const loser = winner === car1 ? car2 : car1;
+                
+                // Find rows for tracking
+                const allRows = getAllSerieRows();
+                const winnerRow = allRows.find(row => {
+                    const name = (row.children[2]?.textContent || '').trim();
+                    return name === winner;
+                });
+                
+                // Save old best time before potential update
+                let oldBestTime = '';
+                if (winnerRow && winnerRow.children[6]) {
+                    oldBestTime = winnerRow.children[6].textContent.trim();
+                }
+                
+                // Track duel in history for undo
+                duelHistory.push({
+                    winner: winner,
+                    loser: loser,
+                    serie: raceSerieVisible,
+                    oldBestTime: oldBestTime,
+                    timestamp: Date.now()
+                });
+                if (duelHistory.length > 100) duelHistory.shift(); // Keep last 100
+                saveDuelHistory();
 
-                // ... (logique du gagnant) ...
+                // Update win column, win%, best time, and total points
+                if (winnerRow) {
+                    incrementWinColumns(winnerRow, 1);
+                    updateWinPercentage(winnerRow);
+                    // Best time is already updated in pickWinner function
+                    updateMainTable(); // This updates total points
+                }
 
                 state.raceWinners.push(winner);
                 state.currentDuels.shift(); // retire duel terminé
@@ -3388,6 +3420,112 @@
 
         });
 
+
+        /* ---------- Table Sorting ---------- */
+        let currentSort = { column: null, direction: 'asc' };
+        
+        function initTableSorting() {
+            const sortableHeaders = document.querySelectorAll('.column-header .sortable');
+            sortableHeaders.forEach(header => {
+                header.style.cursor = 'pointer';
+                header.style.userSelect = 'none';
+                header.addEventListener('click', () => {
+                    const sortType = header.dataset.sort;
+                    const container = serieA.classList.contains('hidden') ? serieB : serieA;
+                    sortTable(container, sortType);
+                });
+            });
+        }
+
+        function sortTable(container, sortType) {
+            const rows = Array.from(container.querySelectorAll('.column-row'));
+            if (rows.length === 0) return;
+
+            const isAsc = currentSort.column === sortType && currentSort.direction === 'asc';
+            currentSort = { column: sortType, direction: isAsc ? 'desc' : 'asc' };
+
+            rows.sort((a, b) => {
+                let aVal, bVal;
+                switch(sortType) {
+                    case 'pos':
+                        aVal = parseInt(a.children[0].textContent) || 0;
+                        bVal = parseInt(b.children[0].textContent) || 0;
+                        break;
+                    case 'car':
+                        aVal = (a.children[2]?.textContent || '').trim().toLowerCase();
+                        bVal = (b.children[2]?.textContent || '').trim().toLowerCase();
+                        break;
+                    case 'points':
+                        aVal = parseFloat(a.children[3]?.textContent.replace(',', '.') || '0') || 0;
+                        bVal = parseFloat(b.children[3]?.textContent.replace(',', '.') || '0') || 0;
+                        break;
+                    case 'win':
+                        aVal = parseInt(a.children[4]?.textContent || '0') || 0;
+                        bVal = parseInt(b.children[4]?.textContent || '0') || 0;
+                        break;
+                    case 'chwin':
+                        aVal = parseInt(a.children[5]?.textContent || '0') || 0;
+                        bVal = parseInt(b.children[5]?.textContent || '0') || 0;
+                        break;
+                    case 'besttime':
+                        const aTime = (a.children[6]?.textContent || '').trim();
+                        const bTime = (b.children[6]?.textContent || '').trim();
+                        aVal = aTime === '--' || aTime === 'DNF' ? Infinity : parseFloat(aTime.replace(',', '.')) || Infinity;
+                        bVal = bTime === '--' || bTime === 'DNF' ? Infinity : parseFloat(bTime.replace(',', '.')) || Infinity;
+                        break;
+                    case 'winpct':
+                        const aPct = (a.children[7]?.textContent || '').replace('%', '').trim();
+                        const bPct = (b.children[7]?.textContent || '').replace('%', '').trim();
+                        aVal = aPct === '--' ? 0 : parseFloat(aPct) || 0;
+                        bVal = bPct === '--' ? 0 : parseFloat(bPct) || 0;
+                        break;
+                    case 'total':
+                        aVal = parseInt(a.children[8]?.textContent || '0') || 0;
+                        bVal = parseInt(b.children[8]?.textContent || '0') || 0;
+                        break;
+                    default:
+                        return 0;
+                }
+
+                if (typeof aVal === 'string') {
+                    return isAsc ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+                }
+                return isAsc ? aVal - bVal : bVal - aVal;
+            });
+
+            // Re-append sorted rows
+            rows.forEach((row, index) => {
+                row.children[0].textContent = index + 1; // Update position
+                container.appendChild(row);
+            });
+        }
+
+        /* ---------- Car Click Functionality ---------- */
+        function initCarClickHandlers() {
+            const allRows = getAllSerieRows();
+            allRows.forEach(row => {
+                const carCell = row.children[2];
+                if (carCell) {
+                    carCell.style.cursor = 'pointer';
+                    carCell.style.textDecoration = 'underline';
+                    carCell.style.textDecorationColor = 'rgba(0, 231, 255, 0.5)';
+                    carCell.addEventListener('click', () => {
+                        const carName = carCell.textContent.trim();
+                        if (carName) {
+                            window.location.href = `driverdetail.html?driver=${encodeURIComponent(carName)}`;
+                        }
+                    });
+                }
+            });
+        }
+
+        // Initialize on load
+        window.addEventListener("load", () => {
+            setTimeout(() => {
+                initTableSorting();
+                initCarClickHandlers();
+            }, 500);
+        });
 
         /* Exports pour debug */
         window.fastwayRace = {

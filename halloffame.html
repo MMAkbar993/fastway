@@ -314,10 +314,10 @@
                     records.mostChampionships = { value: chWins, holder: driver.name };
                 }
 
-                // Best time
+                // Best time - always update if better (never remove)
                 if (driver.bestTime && driver.bestTime !== '--' && driver.bestTime !== 'DNF') {
                     const timeValue = parseFloat(driver.bestTime.replace(',', '.'));
-                    if (!isNaN(timeValue) && timeValue < records.bestTime.value) {
+                    if (!isNaN(timeValue) && (timeValue < records.bestTime.value || records.bestTime.value === Infinity)) {
                         records.bestTime = { value: timeValue, holder: driver.name, time: driver.bestTime };
                     }
                 }
@@ -400,6 +400,13 @@
                 });
                 html += '</div>';
             }
+            html += '</div>';
+
+            // Manual Add Button
+            html += '<div style="text-align: center; margin: 40px 0;">';
+            html += '<button id="addChampionBtn" style="padding: 15px 30px; background: linear-gradient(135deg, #00e7ff 0%, #0099cc 100%); color: #000; border: none; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; transition: all 0.3s ease;">';
+            html += 'Add Champion to Hall of Fame';
+            html += '</button>';
             html += '</div>';
 
             // Records Section
@@ -490,9 +497,71 @@
             }
         };
 
+        // Manual Add Champion Functionality
+        function showAddChampionModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.style.cssText = 'position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 9999;';
+            
+            const content = document.createElement('div');
+            content.style.cssText = 'background: #1a1a1a; padding: 30px; border-radius: 16px; max-width: 500px; width: 90%; border: 2px solid #00e7ff;';
+            
+            content.innerHTML = `
+                <h2 style="color: #00e7ff; margin-bottom: 20px;">Add Champion to Hall of Fame</h2>
+                <input type="text" id="champName" placeholder="Champion Name" style="width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(255,255,255,0.1); border: 2px solid #00e7ff; border-radius: 8px; color: #fff; font-size: 16px;">
+                <input type="number" id="champYear" placeholder="Year/Season" style="width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(255,255,255,0.1); border: 2px solid #00e7ff; border-radius: 8px; color: #fff; font-size: 16px;">
+                <input type="number" id="champWins" placeholder="Wins" style="width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(255,255,255,0.1); border: 2px solid #00e7ff; border-radius: 8px; color: #fff; font-size: 16px;">
+                <input type="number" id="champPoints" placeholder="Points" style="width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(255,255,255,0.1); border: 2px solid #00e7ff; border-radius: 8px; color: #fff; font-size: 16px;">
+                <select id="champSerie" style="width: 100%; padding: 12px; margin-bottom: 20px; background: rgba(255,255,255,0.1); border: 2px solid #00e7ff; border-radius: 8px; color: #fff; font-size: 16px;">
+                    <option value="A">Série A</option>
+                    <option value="B">Série B</option>
+                </select>
+                <div style="display: flex; gap: 10px;">
+                    <button id="saveChampBtn" style="flex: 1; padding: 12px; background: #00e7ff; color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">Save</button>
+                    <button id="cancelChampBtn" style="flex: 1; padding: 12px; background: #666; color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">Cancel</button>
+                </div>
+            `;
+            
+            modal.appendChild(content);
+            document.body.appendChild(modal);
+            
+            document.getElementById('saveChampBtn').addEventListener('click', () => {
+                const name = document.getElementById('champName').value.trim();
+                const year = parseInt(document.getElementById('champYear').value) || new Date().getFullYear();
+                const wins = parseInt(document.getElementById('champWins').value) || 0;
+                const points = parseInt(document.getElementById('champPoints').value) || 0;
+                const serie = document.getElementById('champSerie').value;
+                
+                if (name) {
+                    if (typeof window.addChampionToHallOfFame === 'function') {
+                        window.addChampionToHallOfFame(name, year, wins, points, serie);
+                    }
+                    modal.remove();
+                    renderHallOfFame();
+                }
+            });
+            
+            document.getElementById('cancelChampBtn').addEventListener('click', () => {
+                modal.remove();
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.remove();
+            });
+        }
+
         // Initialize page
         document.addEventListener('DOMContentLoaded', () => {
             renderHallOfFame();
+            
+            // Add button handler
+            setTimeout(() => {
+                const addBtn = document.getElementById('addChampionBtn');
+                if (addBtn) {
+                    addBtn.addEventListener('click', showAddChampionModal);
+                }
+            }, 100);
+            
             // Refresh every 10 seconds to show updates
             setInterval(renderHallOfFame, 10000);
         });

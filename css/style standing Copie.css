@@ -18,11 +18,7 @@
   font-weight: 900;
   margin: -3px;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #00e7ff 0%, #ff003c 50%, #FFD700 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 0 30px rgba(0, 231, 255, 0.5);
+  color: #fff;
   letter-spacing: 2px;
 }
 
@@ -46,6 +42,13 @@
   position: relative;
   overflow: hidden;
   min-height: 40px;
+}
+
+.race-buttons .btn {
+  font-size: 13px;
+  padding: 8px 14px;
+  min-height: 34px;
+  white-space: nowrap;
 }
 
 .btn::before {
@@ -261,9 +264,7 @@
 
 .race-buttons {
   display: flex;
-  gap: 15px;
-  margin-top: 0px;
-  margin-left: 285px;
+  gap: 10px;
   align-items: center;
 }
 

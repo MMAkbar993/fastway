@@ -51,18 +51,20 @@ body {
   max-height: 100%;
   width: auto;
   display: block;
-  transition: transform 0.4s ease;
-  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.1));
+  transition: transform 0.3s ease;
+  filter: none;
 }
 
 .logo-container img:hover {
-  transform: scale(1.03);
+  transform: scale(1.02);
 }
 
 /* ===== LIENS ===== */
 .nav-links {
   display: flex;
   gap: 0px;
+  margin-left: auto;
+  margin-right: 0;
 }
 
 .nav-links a {
@@ -119,9 +121,9 @@ body {
 /* ===== BARRE INFÉRIEURE ===== */
 .navbar-underline {
   height: 5px;
-  background: linear-gradient(90deg, #ff003c, #0077ff);
+  background: linear-gradient(90deg, #FFD700, #0077ff);
   width: 100%;
-  box-shadow: 0 0 15px rgba(255, 0, 60, 0.25), 0 0 25px rgba(0, 120, 255, 0.15);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.25), 0 0 25px rgba(0, 120, 255, 0.15);
 }
 /* ===== EFFET SCROLL ===== */
 .navbar.scrolled {

@@ -343,24 +343,137 @@
             }
         }
 
+        function loadStandingData() {
+            try {
+                const allData = JSON.parse(localStorage.getItem('fastwayAllData') || '[]');
+                const raceState = JSON.parse(localStorage.getItem('fastway_race_state_v2') || '{}');
+                
+                const standings = [];
+                allData.forEach(driver => {
+                    const statsA = raceState.A?.carStats?.[driver.name] || {};
+                    const statsB = raceState.B?.carStats?.[driver.name] || {};
+                    const combinedWins = (statsA.wins || 0) + (statsB.wins || 0);
+                    
+                    standings.push({
+                        name: driver.name,
+                        points: parseInt(driver.points) || 0,
+                        wins: parseInt(driver.wins) || 0,
+                        chWins: parseInt(driver.chWins) || 0,
+                        bestTime: driver.bestTime || '--',
+                        total: (parseInt(driver.wins) || 0) * 10 + (parseInt(driver.points) || 0)
+                    });
+                });
+                
+                // Sort: Cars with chWins first (most to least), then by total points
+                standings.sort((a, b) => {
+                    if (a.chWins > 0 && b.chWins === 0) return -1;
+                    if (a.chWins === 0 && b.chWins > 0) return 1;
+                    if (a.chWins > 0 && b.chWins > 0) return b.chWins - a.chWins;
+                    return b.total - a.total;
+                });
+                
+                return standings;
+            } catch (e) {
+                console.warn('Error loading standing data:', e);
+                return [];
+            }
+        }
+
         function renderPlayoffPage() {
             const playoffState = loadPlayoffState();
             const playoffData = loadPlayoffData();
             const driverData = loadDriverData();
+            const standings = loadStandingData();
             const content = document.getElementById('playoffContent');
 
             if (!playoffState.active) {
-                content.innerHTML = `
-                    <div class="no-playoff">
+                // Show standing table even when playoffs not started
+                let html = '<div class="standings-preview">';
+                html += '<h2 style="color: #00e7ff; text-align: center; margin-bottom: 20px;">Current Standings</h2>';
+                html += '<div style="max-width: 800px; margin: 0 auto; font-size: 14px;">';
+                html += '<table style="width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden;">';
+                html += '<thead><tr style="background: rgba(0, 231, 255, 0.2);">';
+                html += '<th style="padding: 8px; text-align: left;">Pos</th>';
+                html += '<th style="padding: 8px; text-align: left;">Car</th>';
+                html += '<th style="padding: 8px; text-align: center;">CH Wins</th>';
+                html += '<th style="padding: 8px; text-align: center;">Total</th>';
+                html += '<th style="padding: 8px; text-align: center;">Status</th>';
+                html += '</tr></thead><tbody>';
+                
+                standings.forEach((car, index) => {
+                    const isQualified = index < 14;
+                    const hasChWin = car.chWins > 0;
+                    const rowStyle = index === 13 ? 'border-top: 3px solid #ff003c;' : '';
+                    const bgColor = hasChWin ? 'rgba(255, 215, 0, 0.1)' : (isQualified ? 'rgba(0, 231, 255, 0.05)' : 'rgba(255, 0, 60, 0.05)');
+                    
+                    html += `<tr style="${rowStyle} background: ${bgColor};">`;
+                    html += `<td style="padding: 8px;">${index + 1}</td>`;
+                    html += `<td style="padding: 8px; font-weight: 600;">${car.name}</td>`;
+                    html += `<td style="padding: 8px; text-align: center; color: #FFD700;">${car.chWins}</td>`;
+                    html += `<td style="padding: 8px; text-align: center;">${car.total}</td>`;
+                    html += `<td style="padding: 8px; text-align: center;">`;
+                    if (hasChWin) html += '<span style="color: #FFD700;">Auto Qualified</span>';
+                    else if (isQualified) html += '<span style="color: #00e7ff;">Qualified</span>';
+                    else html += '<span style="color: #888;">Not Qualified</span>';
+                    html += `</td></tr>`;
+                    if (index === 13) {
+                        html += '<tr><td colspan="5" style="padding: 8px; text-align: center; color: #ff003c; font-weight: 600; background: rgba(255, 0, 60, 0.1);">';
+                        html += 'Cars above are currently qualified for playoffs. Cars below are not.';
+                        html += '</td></tr>';
+                    }
+                });
+                
+                html += '</tbody></table></div></div>';
+                html += `
+                    <div class="no-playoff" style="margin-top: 40px;">
                         <h2>Playoffs Not Started</h2>
                         <p>The playoffs will begin automatically after the regular season is complete.</p>
                         <p>Complete all regular season races to unlock the playoff bracket.</p>
                     </div>
                 `;
+                content.innerHTML = html;
                 return;
             }
 
             let html = '';
+
+            // Standing table preview
+            html += '<div class="standings-preview" style="margin-bottom: 40px;">';
+            html += '<h2 style="color: #00e7ff; text-align: center; margin-bottom: 20px;">Current Standings</h2>';
+            html += '<div style="max-width: 800px; margin: 0 auto; font-size: 14px;">';
+            html += '<table style="width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden;">';
+            html += '<thead><tr style="background: rgba(0, 231, 255, 0.2);">';
+            html += '<th style="padding: 8px; text-align: left;">Pos</th>';
+            html += '<th style="padding: 8px; text-align: left;">Car</th>';
+            html += '<th style="padding: 8px; text-align: center;">CH Wins</th>';
+            html += '<th style="padding: 8px; text-align: center;">Total</th>';
+            html += '<th style="padding: 8px; text-align: center;">Status</th>';
+            html += '</tr></thead><tbody>';
+            
+            standings.forEach((car, index) => {
+                const isQualified = index < 14;
+                const hasChWin = car.chWins > 0;
+                const rowStyle = index === 13 ? 'border-top: 3px solid #ff003c;' : '';
+                const bgColor = hasChWin ? 'rgba(255, 215, 0, 0.1)' : (isQualified ? 'rgba(0, 231, 255, 0.05)' : 'rgba(255, 0, 60, 0.05)');
+                
+                html += `<tr style="${rowStyle} background: ${bgColor};">`;
+                html += `<td style="padding: 8px;">${index + 1}</td>`;
+                html += `<td style="padding: 8px; font-weight: 600;">${car.name}</td>`;
+                html += `<td style="padding: 8px; text-align: center; color: #FFD700;">${car.chWins}</td>`;
+                html += `<td style="padding: 8px; text-align: center;">${car.total}</td>`;
+                html += `<td style="padding: 8px; text-align: center;">`;
+                if (hasChWin) html += '<span style="color: #FFD700;">Auto Qualified</span>';
+                else if (isQualified) html += '<span style="color: #00e7ff;">Qualified</span>';
+                else html += '<span style="color: #888;">Not Qualified</span>';
+                html += `</td></tr>`;
+                if (index === 13) {
+                    html += '<tr><td colspan="5" style="padding: 8px; text-align: center; color: #ff003c; font-weight: 600; background: rgba(255, 0, 60, 0.1);">';
+                    html += 'Cars above are currently qualified for playoffs. Cars below are not.';
+                    html += '</td></tr>';
+                }
+            });
+            
+            html += '</tbody></table></div></div>';
 
             // Status section
             const currentRound = PLAYOFF_STRUCTURE[playoffState.currentRoundIndex];

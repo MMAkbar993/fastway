@@ -341,7 +341,7 @@
             }
 
             container.innerHTML = filtered.map(driver => `
-                <div class="driver-card serie-${driver.serie.toLowerCase()} ${driver.playoffQualified ? 'playoff' : ''}">
+                <div class="driver-card serie-${driver.serie.toLowerCase()} ${driver.playoffQualified ? 'playoff' : ''}" style="cursor: pointer;" onclick="window.location.href='driverdetail.html?driver=${encodeURIComponent(driver.name)}'">
                     <div class="driver-header">
                         <div class="driver-name">${driver.name}</div>
                         ${driver.number ? `<div class="driver-number">#${driver.number}</div>` : ''}

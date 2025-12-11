@@ -1,8 +1,8 @@
 /* ===== MODERN FASTWAY UI ENHANCEMENTS ===== */
 
-/* Global Modern Background */
+/* Global Modern Background - More Balanced */
 body {
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #1f1f1f 100%);
     background-attachment: fixed;
     min-height: 100vh;
     position: relative;
@@ -16,9 +16,9 @@ body::before {
     width: 100%;
     height: 100%;
     background: 
-        radial-gradient(circle at 20% 50%, rgba(0, 231, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(255, 0, 60, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 20%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
+        radial-gradient(circle at 20% 50%, rgba(0, 231, 255, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 0, 60, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(255, 215, 0, 0.02) 0%, transparent 50%);
     pointer-events: none;
     z-index: 0;
 }
@@ -36,7 +36,9 @@ body::before {
 }
 
 .nav-links {
-    gap: 5px;
+    gap: 0px;
+    margin-left: auto;
+    margin-right: 0;
 }
 
 .nav-links a {
@@ -67,23 +69,32 @@ body::before {
 }
 
 .nav-links a::after {
+    content: "";
+    display: block;
     height: 3px;
-    background: linear-gradient(90deg, #ff003c, #00e7ff);
+    background: linear-gradient(90deg, #ff003c, #0077ff);
     width: 0;
-    bottom: -3px;
-    box-shadow: 0 0 10px rgba(0, 231, 255, 0.5);
+    transition: width 0.35s ease;
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    border-radius: 2px;
 }
 
 .nav-links a:hover::after {
     width: 100%;
 }
 
+/* Active page indicator - keep blue text */
+.nav-links a[style*="color: #00e7ff"] {
+    color: #00e7ff !important;
+}
+
 .navbar-underline {
     height: 3px;
-    background: linear-gradient(90deg, #ff003c 0%, #00e7ff 50%, #ff003c 100%);
-    background-size: 200% 100%;
-    animation: gradientShift 3s ease infinite;
-    box-shadow: 0 0 20px rgba(255, 0, 60, 0.5), 0 0 40px rgba(0, 231, 255, 0.3);
+    background: linear-gradient(90deg, #FFD700 0%, #0077ff 100%);
+    width: 100%;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.25), 0 0 25px rgba(0, 120, 255, 0.15);
 }
 
 @keyframes gradientShift {
@@ -207,13 +218,20 @@ body::before {
     z-index: 1;
 }
 
-.top-line h1, .page-header h1, .playoff-header h1 {
+.page-header h1, .playoff-header h1 {
     background: linear-gradient(135deg, #00e7ff 0%, #ff003c 50%, #FFD700 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     text-shadow: 0 0 30px rgba(0, 231, 255, 0.5);
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* Top-line h1 should be normal color (no gradient) */
+.top-line h1 {
+    color: #fff !important;
+    background: none !important;
+    -webkit-text-fill-color: #fff !important;
 }
 
 /* Modern Cards */
@@ -383,15 +401,15 @@ html {
     box-shadow: 0 0 10px rgba(0, 231, 255, 0.5);
 }
 
-/* Enhanced Logo Glow */
+/* Reduced Logo Hover Effect - No Glow */
 .logo-container img {
-    filter: drop-shadow(0 0 10px rgba(0, 231, 255, 0.5)) !important;
-    transition: all 0.4s ease;
+    filter: none !important;
+    transition: transform 0.3s ease;
 }
 
 .logo-container:hover img {
-    filter: drop-shadow(0 0 20px rgba(0, 231, 255, 0.8)) drop-shadow(0 0 30px rgba(255, 0, 60, 0.5)) !important;
-    transform: scale(1.05);
+    filter: none !important;
+    transform: scale(1.02);
 }
 
 /* Floating Animation for Cards */
