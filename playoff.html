@@ -19,6 +19,12 @@
             padding: 0 40px;
         }
 
+        .standings-preview table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.95) !important;
+            transform: translateX(3px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
         .playoff-header {
             text-align: center;
             margin-bottom: 40px;
@@ -27,37 +33,36 @@
         .playoff-header h1 {
             font-size: 42px;
             font-weight: 900;
-            color: #ff003c;
+            color: #1a1a1a;
             text-transform: uppercase;
             letter-spacing: 3px;
             margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(255, 0, 60, 0.5);
         }
 
         .playoff-status {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            border: 2px solid #ff003c;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(250, 250, 252, 0.9) 100%);
+            border: 2px solid rgba(0, 0, 0, 0.1);
             border-radius: 16px;
             padding: 20px 30px;
             margin-bottom: 30px;
-            box-shadow: 0 0 30px rgba(255, 0, 60, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
         .playoff-status h2 {
-            color: #00e7ff;
+            color: #1a1a1a;
             font-size: 24px;
             margin-bottom: 15px;
             text-transform: uppercase;
         }
 
         .playoff-status p {
-            color: #e0e0e0;
+            color: #2a2a2a;
             font-size: 18px;
             margin: 8px 0;
         }
 
         .playoff-status .active {
-            color: #00ff00;
+            color: #00e7ff;
             font-weight: bold;
         }
 
@@ -69,20 +74,20 @@
         }
 
         .bracket-section {
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid #00e7ff;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(0, 0, 0, 0.1);
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 0 20px rgba(0, 231, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
         .bracket-section h3 {
-            color: #00e7ff;
+            color: #1a1a1a;
             font-size: 20px;
             text-align: center;
             margin-bottom: 20px;
             text-transform: uppercase;
-            border-bottom: 2px solid #00e7ff;
+            border-bottom: 2px solid rgba(0, 231, 255, 0.3);
             padding-bottom: 10px;
         }
 
@@ -98,22 +103,24 @@
         }
 
         .qualified-driver {
-            background: rgba(255, 0, 60, 0.1);
+            background: rgba(255, 255, 255, 0.8);
             border-left: 4px solid #ff003c;
             padding: 12px;
             margin: 8px 0;
             border-radius: 6px;
-            color: #fff;
+            color: #1a1a1a;
             font-weight: 600;
             display: flex;
             justify-content: space-between;
             align-items: center;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .qualified-driver:hover {
-            background: rgba(255, 0, 60, 0.2);
+            background: rgba(255, 255, 255, 1);
             transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .qualified-driver.eliminated {
@@ -124,7 +131,7 @@
 
         .driver-stats {
             font-size: 14px;
-            color: #00e7ff;
+            color: #2a2a2a;
         }
 
         .playoff-rounds {
@@ -135,15 +142,15 @@
         }
 
         .round-card {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            border: 2px solid #00e7ff;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(250, 250, 252, 0.9) 100%);
+            border: 2px solid rgba(0, 0, 0, 0.1);
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 0 20px rgba(0, 231, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
         .round-card h3 {
-            color: #00e7ff;
+            color: #1a1a1a;
             font-size: 22px;
             margin-bottom: 15px;
             text-transform: uppercase;
@@ -155,13 +162,13 @@
             align-items: center;
             margin-top: 15px;
             padding-top: 15px;
-            border-top: 1px solid #333;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         .progress-bar {
             flex: 1;
             height: 8px;
-            background: #333;
+            background: rgba(0, 0, 0, 0.1);
             border-radius: 4px;
             overflow: hidden;
             margin: 0 15px;
@@ -176,18 +183,19 @@
         .no-playoff {
             text-align: center;
             padding: 60px 20px;
-            color: #888;
+            color: #2a2a2a;
         }
 
         .no-playoff h2 {
             font-size: 32px;
             margin-bottom: 20px;
-            color: #666;
+            color: #1a1a1a;
         }
 
         .no-playoff p {
             font-size: 18px;
             line-height: 1.6;
+            color: #2a2a2a;
         }
 
         .final-battle {
@@ -387,43 +395,49 @@
             const content = document.getElementById('playoffContent');
 
             if (!playoffState.active) {
+                // Check for tie between 14th and 15th position
+                const hasTie = standings.length > 14 && 
+                               standings[13].chWins === standings[14].chWins && 
+                               standings[13].total === standings[14].total;
+                
                 // Show standing table even when playoffs not started
                 let html = '<div class="standings-preview">';
-                html += '<h2 style="color: #00e7ff; text-align: center; margin-bottom: 20px;">Current Standings</h2>';
-                html += '<div style="max-width: 800px; margin: 0 auto; font-size: 14px;">';
-                html += '<table style="width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden;">';
-                html += '<thead><tr style="background: rgba(0, 231, 255, 0.2);">';
-                html += '<th style="padding: 8px; text-align: left;">Pos</th>';
-                html += '<th style="padding: 8px; text-align: left;">Car</th>';
-                html += '<th style="padding: 8px; text-align: center;">CH Wins</th>';
-                html += '<th style="padding: 8px; text-align: center;">Total</th>';
-                html += '<th style="padding: 8px; text-align: center;">Status</th>';
+                html += '<h2 style="color: #1a1a1a; text-align: center; margin-bottom: 30px; font-size: 32px; font-weight: 900;">Current Standings</h2>';
+                html += '<div style="max-width: 1000px; margin: 0 auto;">';
+                html += '<div style="background: rgba(255, 255, 255, 0.9); border-radius: 16px; padding: 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);">';
+                html += '<table style="width: 100%; border-collapse: collapse; font-size: 16px;">';
+                html += '<thead><tr style="background: linear-gradient(135deg, rgba(0, 231, 255, 0.15) 0%, rgba(255, 0, 60, 0.15) 100%); border-bottom: 2px solid rgba(0, 0, 0, 0.1);">';
+                html += '<th style="padding: 15px 12px; text-align: left; font-weight: 800; color: #1a1a1a; width: 80px;">Pos</th>';
+                html += '<th style="padding: 15px 12px; text-align: left; font-weight: 800; color: #1a1a1a;">Car</th>';
+                html += '<th style="padding: 15px 12px; text-align: center; font-weight: 800; color: #1a1a1a; width: 120px;">CH Wins</th>';
+                html += '<th style="padding: 15px 12px; text-align: center; font-weight: 800; color: #1a1a1a; width: 120px;">Total</th>';
                 html += '</tr></thead><tbody>';
                 
                 standings.forEach((car, index) => {
                     const isQualified = index < 14;
                     const hasChWin = car.chWins > 0;
-                    const rowStyle = index === 13 ? 'border-top: 3px solid #ff003c;' : '';
-                    const bgColor = hasChWin ? 'rgba(255, 215, 0, 0.1)' : (isQualified ? 'rgba(0, 231, 255, 0.05)' : 'rgba(255, 0, 60, 0.05)');
+                    // Red line between 14th and 15th (border-top on index 14, which is position 15)
+                    const rowStyle = index === 14 ? 'border-top: 4px solid #ff003c;' : '';
+                    const bgColor = hasChWin ? 'rgba(255, 215, 0, 0.15)' : (isQualified ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.5)');
                     
-                    html += `<tr style="${rowStyle} background: ${bgColor};">`;
-                    html += `<td style="padding: 8px;">${index + 1}</td>`;
-                    html += `<td style="padding: 8px; font-weight: 600;">${car.name}</td>`;
-                    html += `<td style="padding: 8px; text-align: center; color: #FFD700;">${car.chWins}</td>`;
-                    html += `<td style="padding: 8px; text-align: center;">${car.total}</td>`;
-                    html += `<td style="padding: 8px; text-align: center;">`;
-                    if (hasChWin) html += '<span style="color: #FFD700;">Auto Qualified</span>';
-                    else if (isQualified) html += '<span style="color: #00e7ff;">Qualified</span>';
-                    else html += '<span style="color: #888;">Not Qualified</span>';
-                    html += `</td></tr>`;
-                    if (index === 13) {
-                        html += '<tr><td colspan="5" style="padding: 8px; text-align: center; color: #ff003c; font-weight: 600; background: rgba(255, 0, 60, 0.1);">';
-                        html += 'Cars above are currently qualified for playoffs. Cars below are not.';
+                    html += `<tr style="${rowStyle} background: ${bgColor}; transition: all 0.2s ease;">`;
+                    html += `<td style="padding: 12px; font-weight: 700; color: #1a1a1a;">${index + 1}</td>`;
+                    html += `<td style="padding: 12px; font-weight: 600; color: #1a1a1a;">${car.name}</td>`;
+                    html += `<td style="padding: 12px; text-align: center; color: #FFD700; font-weight: 700;">${car.chWins}</td>`;
+                    html += `<td style="padding: 12px; text-align: center; color: #1a1a1a; font-weight: 600;">${car.total}</td>`;
+                    html += `</tr>`;
+                    
+                    // Show tie message between 14th and 15th if there's a tie
+                    if (index === 13 && hasTie) {
+                        html += '<tr style="border-top: 4px solid #ff003c; background: rgba(255, 0, 60, 0.1);">';
+                        html += '<td colspan="4" style="padding: 15px; text-align: center;">';
+                        html += '<div style="color: #ff003c; font-weight: 800; font-size: 18px; margin-bottom: 8px;">TIED</div>';
+                        html += '<div style="color: #1a1a1a; font-size: 14px;">A race is required to decide who enters the playoffs</div>';
                         html += '</td></tr>';
                     }
                 });
                 
-                html += '</tbody></table></div></div>';
+                html += '</tbody></table></div></div></div>';
                 html += `
                     <div class="no-playoff" style="margin-top: 40px;">
                         <h2>Playoffs Not Started</h2>
@@ -437,43 +451,49 @@
 
             let html = '';
 
+            // Check for tie between 14th and 15th position
+            const hasTie = standings.length > 14 && 
+                           standings[13].chWins === standings[14].chWins && 
+                           standings[13].total === standings[14].total;
+
             // Standing table preview
             html += '<div class="standings-preview" style="margin-bottom: 40px;">';
-            html += '<h2 style="color: #00e7ff; text-align: center; margin-bottom: 20px;">Current Standings</h2>';
-            html += '<div style="max-width: 800px; margin: 0 auto; font-size: 14px;">';
-            html += '<table style="width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden;">';
-            html += '<thead><tr style="background: rgba(0, 231, 255, 0.2);">';
-            html += '<th style="padding: 8px; text-align: left;">Pos</th>';
-            html += '<th style="padding: 8px; text-align: left;">Car</th>';
-            html += '<th style="padding: 8px; text-align: center;">CH Wins</th>';
-            html += '<th style="padding: 8px; text-align: center;">Total</th>';
-            html += '<th style="padding: 8px; text-align: center;">Status</th>';
+            html += '<h2 style="color: #1a1a1a; text-align: center; margin-bottom: 30px; font-size: 32px; font-weight: 900;">Current Standings</h2>';
+            html += '<div style="max-width: 1000px; margin: 0 auto;">';
+            html += '<div style="background: rgba(255, 255, 255, 0.9); border-radius: 16px; padding: 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);">';
+            html += '<table style="width: 100%; border-collapse: collapse; font-size: 16px;">';
+            html += '<thead><tr style="background: linear-gradient(135deg, rgba(0, 231, 255, 0.15) 0%, rgba(255, 0, 60, 0.15) 100%); border-bottom: 2px solid rgba(0, 0, 0, 0.1);">';
+            html += '<th style="padding: 15px 12px; text-align: left; font-weight: 800; color: #1a1a1a; width: 80px;">Pos</th>';
+            html += '<th style="padding: 15px 12px; text-align: left; font-weight: 800; color: #1a1a1a;">Car</th>';
+            html += '<th style="padding: 15px 12px; text-align: center; font-weight: 800; color: #1a1a1a; width: 120px;">CH Wins</th>';
+            html += '<th style="padding: 15px 12px; text-align: center; font-weight: 800; color: #1a1a1a; width: 120px;">Total</th>';
             html += '</tr></thead><tbody>';
             
             standings.forEach((car, index) => {
                 const isQualified = index < 14;
                 const hasChWin = car.chWins > 0;
-                const rowStyle = index === 13 ? 'border-top: 3px solid #ff003c;' : '';
-                const bgColor = hasChWin ? 'rgba(255, 215, 0, 0.1)' : (isQualified ? 'rgba(0, 231, 255, 0.05)' : 'rgba(255, 0, 60, 0.05)');
+                // Red line between 14th and 15th (border-top on index 14, which is position 15)
+                const rowStyle = index === 14 ? 'border-top: 4px solid #ff003c;' : '';
+                const bgColor = hasChWin ? 'rgba(255, 215, 0, 0.15)' : (isQualified ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.5)');
                 
-                html += `<tr style="${rowStyle} background: ${bgColor};">`;
-                html += `<td style="padding: 8px;">${index + 1}</td>`;
-                html += `<td style="padding: 8px; font-weight: 600;">${car.name}</td>`;
-                html += `<td style="padding: 8px; text-align: center; color: #FFD700;">${car.chWins}</td>`;
-                html += `<td style="padding: 8px; text-align: center;">${car.total}</td>`;
-                html += `<td style="padding: 8px; text-align: center;">`;
-                if (hasChWin) html += '<span style="color: #FFD700;">Auto Qualified</span>';
-                else if (isQualified) html += '<span style="color: #00e7ff;">Qualified</span>';
-                else html += '<span style="color: #888;">Not Qualified</span>';
-                html += `</td></tr>`;
-                if (index === 13) {
-                    html += '<tr><td colspan="5" style="padding: 8px; text-align: center; color: #ff003c; font-weight: 600; background: rgba(255, 0, 60, 0.1);">';
-                    html += 'Cars above are currently qualified for playoffs. Cars below are not.';
+                html += `<tr style="${rowStyle} background: ${bgColor}; transition: all 0.2s ease;">`;
+                html += `<td style="padding: 12px; font-weight: 700; color: #1a1a1a;">${index + 1}</td>`;
+                html += `<td style="padding: 12px; font-weight: 600; color: #1a1a1a;">${car.name}</td>`;
+                html += `<td style="padding: 12px; text-align: center; color: #FFD700; font-weight: 700;">${car.chWins}</td>`;
+                html += `<td style="padding: 12px; text-align: center; color: #1a1a1a; font-weight: 600;">${car.total}</td>`;
+                html += `</tr>`;
+                
+                // Show tie message between 14th and 15th if there's a tie
+                if (index === 13 && hasTie) {
+                    html += '<tr style="border-top: 4px solid #ff003c; background: rgba(255, 0, 60, 0.1);">';
+                    html += '<td colspan="4" style="padding: 15px; text-align: center;">';
+                    html += '<div style="color: #ff003c; font-weight: 800; font-size: 18px; margin-bottom: 8px;">TIED</div>';
+                    html += '<div style="color: #1a1a1a; font-size: 14px;">A race is required to decide who enters the playoffs</div>';
                     html += '</td></tr>';
                 }
             });
             
-            html += '</tbody></table></div></div>';
+            html += '</tbody></table></div></div></div>';
 
             // Status section
             const currentRound = PLAYOFF_STRUCTURE[playoffState.currentRoundIndex];

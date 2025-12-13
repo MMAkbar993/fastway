@@ -37,8 +37,8 @@
         <div class="top-line">
             <h1>Fastway <span id="serie-indicator">A</span>/B Standing</h1>
             <div class="race-buttons">
-                <button class="btn start-calif">START</button>
-                <button id="startRaceBtn" class="btn start-race">SERIES</button>
+                <button class="btn start-calif">Start Qualif</button>
+                <button id="startRaceBtn" class="btn start-race">Start Race</button>
             </div>
             <div class="vertical-divider"></div>
             <div class="top-buttons-wrapper">
@@ -1103,7 +1103,7 @@
                 rows.forEach((row) => {
                     const getText = (i) => (row.children[i] && row.children[i].textContent) ? row.children[i].textContent.trim() : "";
                     const points = parseInt(getText(COL_POINT_CALIF).replace(/\D/g, '')) || 0;
-                    const wins = parseInt(getText(4)) || 0;
+                    const wins = parseInt(getText(COL_WIN)) || 0;
 
                     let lossCell = row.querySelector(".loss");
                     if (!lossCell) {
@@ -2415,11 +2415,22 @@
         /* ---------- WIN COLUMNS ---------- */
         function incrementWinColumns(row, delta = 1) {
             if (!row) return;
+            
+            // Déterminer la série (A ou B) à laquelle appartient cette row
+            let seriesKey = 'A';
+            if (serieB && serieB.contains(row)) {
+                seriesKey = 'B';
+            } else if (serieA && serieA.contains(row)) {
+                seriesKey = 'A';
+            }
+            
             // Mettre à jour DOM si présent
             if (typeof COL_WIN !== 'undefined') {
                 const el = row.children[COL_WIN];
-                const cur = parseInt(el.textContent || '0', 10) || 0;
-                el.textContent = cur + delta;
+                if (el) {
+                    const cur = parseInt(el.textContent || '0', 10) || 0;
+                    el.textContent = cur + delta;
+                }
             } else {
                 const winEl = row.querySelector('.win');
                 if (winEl) {
@@ -2428,18 +2439,32 @@
                 }
             }
 
-            // Mettre à jour l'état sauvegardé (source de vérité)
+            // Mettre à jour l'état sauvegardé (source de vérité) pour la série correcte
             const name = (row.children[2]?.textContent || '').trim();
             if (!name) return;
-            const state = getCurrentState();
+            
+            const state = raceStates[seriesKey];
+            if (!state) {
+                // Si l'état n'existe pas, le créer
+                raceStates[seriesKey] = {
+                    racePaused: false,
+                    raceRound: 1,
+                    raceQueue: [],
+                    raceWinners: [],
+                    currentDuels: [],
+                    raceFinished: false,
+                    carStats: {}
+                };
+            }
+            
             if (!state.carStats) state.carStats = {};
             if (!state.carStats[name]) state.carStats[name] = { wins: 0, losses: 0 };
 
             state.carStats[name].wins = parseInt(state.carStats[name].wins || 0, 10) + delta;
             saveRaceState(); // <-- La victoire est sauvegardée ici.
 
-
-            if (typeof updateWinPercentage === 'function') updateWinPercentage(row);
+            // Mettre à jour le pourcentage de victoires avec l'état correct
+            if (typeof updateWinPercentage === 'function') updateWinPercentage(row, state);
             if (typeof updateMainTable === 'function') updateMainTable();
         }
 

@@ -97,12 +97,18 @@
             padding: 20px;
             transition: all 0.3s ease;
             box-shadow: 0 0 20px rgba(0, 231, 255, 0.1);
+            position: relative;
+            user-select: none;
         }
 
         .driver-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 0 30px rgba(0, 231, 255, 0.3);
             border-color: #ff003c;
+        }
+
+        .driver-card * {
+            pointer-events: none;
         }
 
         .driver-card.serie-a {
@@ -340,8 +346,11 @@
                 return;
             }
 
-            container.innerHTML = filtered.map(driver => `
-                <div class="driver-card serie-${driver.serie.toLowerCase()} ${driver.playoffQualified ? 'playoff' : ''}" style="cursor: pointer;" onclick="window.location.href='driverdetail.html?driver=${encodeURIComponent(driver.name)}'">
+            container.innerHTML = filtered.map((driver, index) => `
+                <div class="driver-card serie-${driver.serie.toLowerCase()} ${driver.playoffQualified ? 'playoff' : ''}" 
+                     style="cursor: pointer;" 
+                     data-driver-name="${driver.name.replace(/"/g, '&quot;')}"
+                     data-driver-index="${index}">
                     <div class="driver-header">
                         <div class="driver-name">${driver.name}</div>
                         ${driver.number ? `<div class="driver-number">#${driver.number}</div>` : ''}
@@ -383,6 +392,22 @@
             const drivers = loadAllDrivers();
             let currentFilter = 'all';
             let currentSearch = '';
+            const container = document.getElementById('driversContainer');
+
+            // Use event delegation on the container for better reliability
+            // This works even when cards are re-rendered
+            container.addEventListener('click', function(e) {
+                // Find the closest driver-card parent
+                const card = e.target.closest('.driver-card');
+                if (card) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const driverName = card.getAttribute('data-driver-name');
+                    if (driverName) {
+                        window.location.href = `driverdetail.html?driver=${encodeURIComponent(driverName)}`;
+                    }
+                }
+            });
 
             // Filter buttons
             document.querySelectorAll('.filter-btn').forEach(btn => {
