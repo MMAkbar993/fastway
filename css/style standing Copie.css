@@ -341,12 +341,26 @@
 }
 
 .admin-buttons {
-  background: rgba(255, 255, 255, 0.8);
+  background: #1a1a1a;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 16px;
+  border: none;
+  border-radius: 0;
   padding: 30px;
   margin-top: 40px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.admin-buttons::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #ff003c 0%, #0077ff 100%);
+  box-shadow: 0 0 15px rgba(255, 0, 60, 0.25), 0 0 25px rgba(0, 120, 255, 0.15);
+  z-index: 1;
 }
 
 .admin-buttons button {
