@@ -1,4 +1,3 @@
-
 function loadHallOfFameData() {
     try {
         // Load championship history

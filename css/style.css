@@ -1,11 +1,11 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 body {
   margin: 0;
-  background-color: #DEDEDE;
+  background-color: #dedede;
   font-family: "Segoe UI", sans-serif;
 }
 
@@ -42,8 +42,53 @@ body {
   margin-left: -10px; /* ajuste selon le besoin */
 }
 
-
 /* ===== LOGO ===== */
+.logo {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 12px;
+  cursor: default !important;
+  pointer-events: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logo-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-right: 10px;
+}
+
+.logo-bar {
+  width: 6px;
+  height: 18px;
+  background: linear-gradient(135deg, #ff003c, #0077ff);
+  border-radius: 2px;
+}
+
+.logo-text {
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  letter-spacing: 1px;
+}
+
+.fast {
+  background: linear-gradient(135deg, #ff003c, #ff6b6b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.way {
+  background: linear-gradient(135deg, #0077ff, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .logo-container {
   height: 52px;
   display: flex;
@@ -61,10 +106,6 @@ body {
   filter: none;
 }
 
-.logo-container img:hover {
-  transform: scale(1.02);
-}
-
 /* ===== LIENS ===== */
 .nav-links {
   display: flex;
@@ -76,7 +117,7 @@ body {
 .nav-links a {
   color: #2a2a2a;
   text-decoration: none;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   font-weight: 600;
   font-size: 17px;
   position: relative;
@@ -240,28 +281,23 @@ body {
   cursor: pointer;
 }
 
-
-
-
 /* Container du logo pour limiter la taille */
 .logo-container {
-    height: 50px;       /* hauteur fixe de la navbar pour le logo */
-    display: flex;
-    align-items: center; /* centre verticalement l'image */
-    overflow: hidden;    /* coupe ce qui dépasse */
+  height: 50px; /* hauteur fixe de la navbar pour le logo */
+  display: flex;
+  align-items: center; /* centre verticalement l'image */
+  overflow: hidden; /* coupe ce qui dépasse */
 }
 
 /* Image du logo */
 .logo-container img {
-    max-height: 100%;    /* l'image prendra au maximum la hauteur du container */
-    width: auto;         /* garde les proportions */
-    display: block;
+  max-height: 100%; /* l'image prendra au maximum la hauteur du container */
+  width: auto; /* garde les proportions */
+  display: block;
 }
 
 .navbar .logo img {
-    height: 50px; /* taille idéale */
-    width: auto;  /* garde les proportions */
-    display: block;
+  height: 50px; /* taille idéale */
+  width: auto; /* garde les proportions */
+  display: block;
 }
-
-
