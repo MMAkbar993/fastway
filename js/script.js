@@ -1,4 +1,3 @@
-
 // Standing page series switching
 const serieA = document.getElementById("serie-a");
 const serieB = document.getElementById("serie-b");
@@ -2971,5 +2970,3 @@ window.fastwayRace = {
     saveRaceState,
     loadRaceState
 };
-
-

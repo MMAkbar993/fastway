@@ -183,4 +183,3 @@ function renderAwardDetail() {
 document.addEventListener('DOMContentLoaded', () => {
     renderAwardDetail();
 });
-

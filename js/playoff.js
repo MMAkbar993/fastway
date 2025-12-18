@@ -1,4 +1,3 @@
-
 // Playoff configuration (matching index.html)
 // Use global to avoid duplicate declaration when script.js is also loaded
 if (typeof PLAYOFF_STRUCTURE === 'undefined') {
