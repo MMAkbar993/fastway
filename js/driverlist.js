@@ -1,4 +1,3 @@
-
 function loadAllDrivers() {
     try {
         const allData = JSON.parse(localStorage.getItem('fastwayAllData') || '[]');

@@ -1,4 +1,3 @@
-
 window.loadAwardsData = function() {
     try {
         const allData = JSON.parse(localStorage.getItem('fastwayAllData') || '[]');
